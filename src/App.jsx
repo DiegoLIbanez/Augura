@@ -1,16 +1,18 @@
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { getAllCompany } from "./store/action/companyAction";
+//Rutas
+import AppRouter from './routes/AppRouter';
+
 
 function App() {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getAllCompany());
-  }, [dispatch]);
+
+  // const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   dispatch(getAllCompany());
+  // }, [dispatch]);
 
   return (
     <>
-      <h1 class="text-3xl font-bold underline">Hello world!</h1>
+      <AppRouter />      
     </>
   );
 }
