@@ -1,25 +1,29 @@
-import React,{ useContext } from 'react';
+import React, { useContext } from "react";
 
-//Views 
-import ListDisinfect from '../register-disinfect/list/List';
+//Views
+import ListDisinfect from "../register-disinfect/list/List";
 
 //Components
-import Sidebar from '../../components/Sidebar/Sidebar';
+import Sidebar from "../../components/Sidebar/Sidebar";
 
 //Context for views
-import { ViewsContext } from '../../context/ViewsContext';
+import { ViewsContext } from "../../context/ViewsContext";
+import Navbar from "../../components/Navbar/Navbar";
 
 function Home() {
-
   //Manejo de las vistas
   const { views } = useContext(ViewsContext);
 
   return (
     <>
-      <Sidebar />
-      {views.listDisinfect === true ? <ListDisinfect /> : <></> }
+      <div className="flex flex-col min-h-screen">
+        <Navbar />
+        <div className="container sm:px-6 lg:px-8 py-20">
+          {views.listDisinfect === true ? <ListDisinfect /> : <></>}
+        </div>
+      </div>
     </>
-  )
+  );
 }
 
-export default Home
+export default Home;
