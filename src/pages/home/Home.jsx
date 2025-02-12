@@ -4,11 +4,10 @@ import React, { useContext } from "react";
 import ListDisinfect from "../register-disinfect/list/List";
 
 //Components
-import Sidebar from "../../components/Sidebar/Sidebar";
+import Navbar from "../../components/Navbar/Navbar";
 
 //Context for views
 import { ViewsContext } from "../../context/ViewsContext";
-import Navbar from "../../components/Navbar/Navbar";
 
 function Home() {
   //Manejo de las vistas

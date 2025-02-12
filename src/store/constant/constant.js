@@ -1,1 +1,0 @@
-export const GET_COMPANY_ALL = "GET COMPANY ALL";
