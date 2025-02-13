@@ -4,7 +4,7 @@ import Login from "../login/Login";
 function Index() {
   return (
     <div className="flex flex-col min-h-screen">
-      <Login />
+      <p>Dirigete al login</p>
     </div>
   );
 }

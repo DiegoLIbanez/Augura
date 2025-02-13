@@ -8,19 +8,23 @@ import Home from '../pages/home/Home';
 import NotFound from '../pages/notFound/NotFound'; 
 
 //Components
-// import PrivateRoute from '../components/PrivateRoute/PrivateRoute';
-
-// useContext for material ui
-// import { ThemeContextProvider } from '../context/ThemeContext';
+import PrivateRoute from '../components/PrivateRoute/PrivateRoute';
 
 function AppRouter() {
   return (
     <>
       <Routes>
-        <Route path='/' element={<Index />} />
+        <Route path='/' element={<Login />} />
+        <Route path='/login' element={<Login />} />    
         <Route path='/index' element={<Index />} />
-        <Route path='/login' element={<Login />} />        
-        <Route path='/home' element={<Home />} />   
+        <Route
+          path="/home"
+          element={
+            <PrivateRoute>
+              <Home />
+            </PrivateRoute>
+          }
+        />   
         <Route path='*' element={<NotFound />} />
       </Routes>
     </>
