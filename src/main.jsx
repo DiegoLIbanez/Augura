@@ -5,10 +5,10 @@ import "./style/main.css";
 import { Provider } from "react-redux";
 
 //Store
-import store from "./store/store.jsx";
+import store from "./store/store.js";
 
 //React router dom
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from "react-router-dom";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
