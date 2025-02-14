@@ -1,7 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
+
 import Sidebar from "../Sidebar/Sidebar";
 
+//Redux 
+import { useSelector } from "react-redux";
+
 function Navbar() {
+
+  const infoAuth = useSelector((store) => store.auth.data);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -47,9 +53,12 @@ function Navbar() {
                   />
                 </svg>
               </button>
-              <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white ms-2">
-                Hello, My Name
-              </span>
+
+              <div className="flex ms-2 md:me-24">
+                <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
+                 {infoAuth.user}
+                </span>
+              </div>
             </div>
 
             <div className="flex items-center">
