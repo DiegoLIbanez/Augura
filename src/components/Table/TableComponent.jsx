@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchregisterVehicleSlice } from "../../store/slice/registeVehicleSlice";
 import { fetchtypeVehicle } from "../../store/slice/typeVehicleSlice";
@@ -6,83 +6,14 @@ import { fetchstatusDesinfection } from "../../store/slice/statusDesinfectionSli
 import { fetchTypeBurden } from "../../store/slice/typeBurdenSlice";
 import { fetchtypeCommunal } from "../../store/slice/typeCommunalSlice";
 import { fetchtypeInput } from "../../store/slice/typeInputSlice";
-
-function vehicleFilter(
-  state,
-  typeVehicleId,
-  companyId,
-  statusDesinfectionId,
-  typeBurdenId,
-  typeCommunalId,
-  typeInputId,
-  searchTerm
-) {
-  return (
-    state?.data?.filter((item) => {
-      const searchLower = searchTerm.trim().toLowerCase();
-
-      const matchesTypeVehicle =
-        typeVehicleId === "---Todos---" ||
-        item.vehicle?.[0]?.typeVehicle?.[0]?._id === typeVehicleId;
-
-      const matchesCompany =
-        companyId === "---Todos---" ||
-        item.vehicle?.[0]?.company?.[0]?._id === companyId;
-
-      const matchesStatusDesinfection =
-        statusDesinfectionId === "---Todos---" ||
-        item.statusDesinfection?.[0]?._id === statusDesinfectionId;
-      const matchesTypeBurden =
-        typeBurdenId === "---Todos---" ||
-        item.typeBurden?.[0]?._id === typeBurdenId;
-
-      const matchesTypeCommunal =
-        typeCommunalId === "---Todos---" ||
-        item.typeCommunal?.[0]?._id === typeCommunalId;
-
-      const matchesTypeInput =
-        typeInputId === "---Todos---" ||
-        item.typeInput?.[0]?._id === typeInputId;
-
-      const matchesSearch =
-        searchLower === "" ||
-        item.person?.[0]?.dni?.toLowerCase().includes(searchLower) ||
-        item.person?.[0]?.name?.toLowerCase().includes(searchLower) ||
-        item.vehicle?.[0]?.plate?.toLowerCase().includes(searchLower) ||
-        item.vehicle?.[0]?.typeVehicle?.[0]?.description
-          ?.toLowerCase()
-          .includes(searchLower) ||
-        item.vehicle?.[0]?.company?.[0]?.name
-          ?.toLowerCase()
-          .includes(searchLower) ||
-        item.statusDesinfection?.[0]?.description
-          ?.toLowerCase()
-          .includes(searchLower) ||
-        item.typeBurden?.[0]?.description
-          ?.toLowerCase()
-          .includes(searchLower) ||
-        item.typeCommunal?.[0]?.description
-          ?.toLowerCase()
-          .includes(searchLower) ||
-        item.typeInput?.[0]?.description?.toLowerCase().includes(searchLower) ||
-        item.initialDestination?.toLowerCase().includes(searchLower) ||
-        item.endDestination?.toLowerCase().includes(searchLower);
-
-      return (
-        matchesTypeVehicle &&
-        matchesCompany &&
-        matchesStatusDesinfection &&
-        matchesTypeBurden &&
-        matchesTypeCommunal &&
-        matchesTypeInput &&
-        matchesSearch
-      );
-    }) || []
-  );
-}
+import { utils, writeFile } from "xlsx";
+import { transformDataForExport } from "../../services/transformDataForExport";
+import { vehicleFilter } from "../../services/vihecleFilter";
 
 function TableComponent() {
   const dispatch = useDispatch();
+
+  // Estados para los filtros
   const [search, setSearch] = useState("");
   const [typeVehicleinput, settypeVehicleinput] = useState("---Todos---");
   const [companyinput, setcompanyinput] = useState("---Todos---");
@@ -93,6 +24,11 @@ function TableComponent() {
   const [typeInputinput, settypeInputinput] = useState("---Todos---");
   const [filteredData, setFilteredData] = useState([]);
 
+  //  Estados para las fechas
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  // Datos de los estados
   const { registerVehicle } = useSelector((state) => state.registerVehicle);
   const { typeVehicle } = useSelector((state) => state.typeVehicle);
   const { company } = useSelector((state) => state.company);
@@ -103,16 +39,41 @@ function TableComponent() {
   const { typeCommunal } = useSelector((state) => state.typeCommunal);
   const { typeInput } = useSelector((state) => state.typeInput);
 
-  const fecha = (dateMongo) => {
+  // Funcion para formatear la fecha
+  const fecha = useCallback((dateMongo) => {
     const date = new Date(dateMongo);
     const dia = String(date.getDate()).padStart(2, "0");
-    const mes = String(date.getMonth() + 1).padStart(2, "0"); // Los meses van de 0-11
+    const mes = String(date.getMonth() + 1).padStart(2, "0");
     const año = date.getFullYear();
     const horas = String(date.getHours()).padStart(2, "0");
     const minutos = String(date.getMinutes()).padStart(2, "0");
     return `${dia}/${mes}/${año} ${horas}:${minutos}`;
-  };
+  }, []);
 
+  // Funcion para exportar
+  const handleExport = (exportAll = false) => {
+    const sourceData = exportAll ? registerVehicle?.data || [] : filteredData;
+
+    if (!sourceData || sourceData.length === 0) {
+      alert("No hay datos para exportar");
+      return;
+    }
+
+    try {
+      const transformedData = transformDataForExport(sourceData, fecha);
+      const worksheet = utils.json_to_sheet(transformedData);
+      const workbook = utils.book_new();
+      utils.book_append_sheet(workbook, worksheet, "Datos");
+      writeFile(
+        workbook,
+        `${exportAll ? "Todos_los_datos" : "Datos_filtrados"}.xlsx`
+      );
+    } catch (error) {
+      console.error("Error al exportar:", error);
+      alert("Error al generar el archivo");
+    }
+  };
+  // Cargar los datos
   useEffect(() => {
     dispatch(fetchtypeVehicle());
     dispatch(fetchregisterVehicleSlice());
@@ -122,6 +83,7 @@ function TableComponent() {
     dispatch(fetchtypeInput());
   }, [dispatch]);
 
+  // Filtrar los datos
   useEffect(() => {
     const filtered = vehicleFilter(
       registerVehicle,
@@ -131,7 +93,9 @@ function TableComponent() {
       typeBurdeninput,
       typeCommunalinput,
       typeInputinput,
-      search
+      search,
+      startDate,
+      endDate
     );
     setFilteredData(filtered);
   }, [
@@ -143,8 +107,11 @@ function TableComponent() {
     typeCommunalinput,
     typeInputinput,
     search,
+    startDate,
+    endDate,
   ]);
 
+  // Manejo de los cambios en los filtros
   const handleProjectChange = (e) => settypeVehicleinput(e.target.value);
   const handleCompanyChange = (e) => setcompanyinput(e.target.value);
   const handleStatusDesinfectionChange = (e) =>
@@ -154,7 +121,60 @@ function TableComponent() {
   const handleTypeInputChange = (e) => settypeInputinput(e.target.value);
 
   return (
-    <>
+    <div className="flex flex-col w-full mx-auto gap-9 bg-white shadow-md rounded-lg overflow-hidden">
+      <div className="flex flex-col md:flex-row lg:w-1/2 md:w-full gap-6 p-4">
+        <div className="flex flex-col flex-1">
+          <label className="text-sm font-medium text-slate-800">
+            Fecha Inicial
+          </label>
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            className="mt-1 p-2 border rounded-md focus:ring-2 focus:ring-indigo-500"
+          />
+        </div>
+
+        <div className="flex flex-col flex-1">
+          <label className="text-sm font-medium text-slate-800">
+            Fecha Final
+          </label>
+          <input
+            type="date"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            className="mt-1 p-2 border rounded-md focus:ring-2 focus:ring-indigo-500"
+          />
+        </div>
+
+        <div className="flex flex-col justify-end">
+          <button
+            onClick={() => {
+              setStartDate("");
+              setEndDate("");
+            }}
+            className="h-[42px] px-4 text-sm bg-gray-200 hover:bg-gray-300 rounded-md transition-colors"
+          >
+            Limpiar fechas
+          </button>
+        </div>
+      </div>
+      <div>
+        <div className="flex flex-col md:flex-row lg:w-1/2 md:w-full gap-6 p-4">
+          <button
+            onClick={() => handleExport(false)}
+            className="h-[42px] px-4 text-sm bg-green-600 hover:bg-green-700 text-white rounded-md transition-colors"
+          >
+            Exportar Filtrados
+          </button>
+          <button
+            onClick={() => handleExport(true)}
+            className="h-[42px] px-4 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
+          >
+            Exportar Todos
+          </button>
+        </div>
+      </div>
       <div className="flex flex-col w-full mx-auto bg-white shadow-md rounded-lg overflow-hidden">
         <div className="w-full flex flex-col sm:flex-row justify-between items-center mb-3 mt-1 pl-3">
           <div className="flex flex-col sm:flex-row sm:space-x-4">
@@ -511,7 +531,7 @@ function TableComponent() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

@@ -17,7 +17,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
           <ul className="space-y-2 font-medium">
             <li>
               <button
-                onClick={() => setViews({ listDisinfect: true })} //Agregamos la función para cambiar la vista
+                onClick={() => setViews({ listDisinfect: true })}
                 className="flex items-center w-full p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <svg
@@ -33,7 +33,6 @@ function Sidebar({ isOpen, toggleSidebar }) {
                 <span className="ms-3">Dashboard</span>
               </button>
             </li>
-            {/* Resto del sidebar... */}
           </ul>
         </div>
       </aside>
