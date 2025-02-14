@@ -1,7 +1,14 @@
-import React, { useState } from "react";
+import React, { useState,useEffect, use } from "react";
+
+//Components
 import Sidebar from "../Sidebar/Sidebar";
 
+//Redux 
+import { useSelector } from "react-redux";
+
 function Navbar() {
+
+  const infoAuth = useSelector((store) => store.auth.data);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -37,7 +44,7 @@ function Navbar() {
               </button>
               <div className="flex ms-2 md:me-24">
                 <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
-                  Hello, My Name
+                 {infoAuth.user}
                 </span>
               </div>
             </div>

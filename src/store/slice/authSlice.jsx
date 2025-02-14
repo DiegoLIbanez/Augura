@@ -30,10 +30,11 @@ export const logout = () => {
 };
 
 const initialState = {
-  user: null,
   status: "idle",
-  error: null,
   isAuthenticated:false,
+  token:null,
+  statusCode:0,
+  data:[]
   // token: sessionStorage.getItem("token") || null,
 };
 
@@ -49,6 +50,9 @@ const authSlice = createSlice({
     .addCase(login.fulfilled, (state, action) => {
       state.status = "succeeded";
       state.isAuthenticated = true;
+      state.token = action.payload.token;
+      state.statusCode = action.payload.statusCode;
+      state.data = action.payload;
       // state.token = action.payload.token;      
     })
     .addCase(login.rejected, (state, action) => {

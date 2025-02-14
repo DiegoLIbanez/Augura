@@ -20,7 +20,7 @@ function vehicleFilter(
   return (
     state?.data?.filter((item) => {
       const searchLower = searchTerm.trim().toLowerCase();
-
+      
       const matchesTypeVehicle =
         typeVehicleId === "---Todos---" ||
         item.vehicle?.[0]?.typeVehicle?.[0]?._id === typeVehicleId;
@@ -86,19 +86,15 @@ function TableComponent() {
   const [search, setSearch] = useState("");
   const [typeVehicleinput, settypeVehicleinput] = useState("---Todos---");
   const [companyinput, setcompanyinput] = useState("---Todos---");
-  const [statusDesinfectioninput, setstatusDesinfectioninput] =
-    useState("---Todos---");
+  const [statusDesinfectioninput, setstatusDesinfectioninput] = useState("---Todos---");
   const [typeBurdeninput, settypeBurdeninput] = useState("---Todos---");
   const [typeCommunalinput, settypeCommunalinput] = useState("---Todos---");
   const [typeInputinput, settypeInputinput] = useState("---Todos---");
   const [filteredData, setFilteredData] = useState([]);
-
   const { registerVehicle } = useSelector((state) => state.registerVehicle);
   const { typeVehicle } = useSelector((state) => state.typeVehicle);
   const { company } = useSelector((state) => state.company);
-  const { statusDesinfection } = useSelector(
-    (state) => state.statusDesinfection
-  );
+  const { statusDesinfection } = useSelector((state) => state.statusDesinfection);
   const { typeBurden } = useSelector((state) => state.typeBurden);
   const { typeCommunal } = useSelector((state) => state.typeCommunal);
   const { typeInput } = useSelector((state) => state.typeInput);
@@ -147,8 +143,7 @@ function TableComponent() {
 
   const handleProjectChange = (e) => settypeVehicleinput(e.target.value);
   const handleCompanyChange = (e) => setcompanyinput(e.target.value);
-  const handleStatusDesinfectionChange = (e) =>
-    setstatusDesinfectioninput(e.target.value);
+  const handleStatusDesinfectionChange = (e) => setstatusDesinfectioninput(e.target.value);
   const handleTypeBurdenChange = (e) => settypeBurdeninput(e.target.value);
   const handleTypeCommunalChange = (e) => settypeCommunalinput(e.target.value);
   const handleTypeInputChange = (e) => settypeInputinput(e.target.value);
