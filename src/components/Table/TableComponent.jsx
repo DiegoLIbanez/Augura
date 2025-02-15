@@ -1,6 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchregisterVehicleSlice } from "../../store/slice/registeVehicleSlice";
+import {
+  fetchregisterVehicleSlice,
+  fetchregisterVehicleByIdSlice,
+} from "../../store/slice/registeVehicleSlice";
 import { fetchtypeVehicle } from "../../store/slice/typeVehicleSlice";
 import { fetchstatusDesinfection } from "../../store/slice/statusDesinfectionSlice";
 import { fetchTypeBurden } from "../../store/slice/typeBurdenSlice";
@@ -9,6 +12,8 @@ import { fetchtypeInput } from "../../store/slice/typeInputSlice";
 import { utils, writeFile } from "xlsx";
 import { transformDataForExport } from "../../services/transformDataForExport";
 import { vehicleFilter } from "../../services/vihecleFilter";
+import { Link } from "react-router-dom";
+import { fetchCompany } from "../../store/slice/companySlice";
 
 function TableComponent() {
   const dispatch = useDispatch();
@@ -29,16 +34,17 @@ function TableComponent() {
   const [endDate, setEndDate] = useState("");
 
   // Datos de los estados
-  const { registerVehicle } = useSelector((state) => state.registerVehicle);
-  const { typeVehicle } = useSelector((state) => state.typeVehicle);
-  const { company } = useSelector((state) => state.company);
-  const { statusDesinfection } = useSelector(
-    (state) => state.statusDesinfection
+  const registerVehicle = useSelector((state) => state.registerVehicle.data);
+  const typeVehicle = useSelector((state) => state.typeVehicle.data);
+  const company = useSelector((state) => state.company.data);
+  const statusDesinfection = useSelector(
+    (state) => state.statusDesinfection.data
   );
-  const { typeBurden } = useSelector((state) => state.typeBurden);
-  const { typeCommunal } = useSelector((state) => state.typeCommunal);
-  const { typeInput } = useSelector((state) => state.typeInput);
+  const typeBurden = useSelector((state) => state.typeBurden.data);
+  const typeCommunal = useSelector((state) => state.typeCommunal.data);
+  const typeInput = useSelector((state) => state.typeInput.data);
 
+  console.log(company);
   // Funcion para formatear la fecha
   const fecha = useCallback((dateMongo) => {
     const date = new Date(dateMongo);
@@ -76,6 +82,7 @@ function TableComponent() {
   // Cargar los datos
   useEffect(() => {
     dispatch(fetchtypeVehicle());
+    dispatch(fetchCompany());
     dispatch(fetchregisterVehicleSlice());
     dispatch(fetchstatusDesinfection());
     dispatch(fetchTypeBurden());
@@ -119,7 +126,9 @@ function TableComponent() {
   const handleTypeBurdenChange = (e) => settypeBurdeninput(e.target.value);
   const handleTypeCommunalChange = (e) => settypeCommunalinput(e.target.value);
   const handleTypeInputChange = (e) => settypeInputinput(e.target.value);
-
+  const handleIdChange = (e) => {
+    dispatch(fetchregisterVehicleByIdSlice(e));
+  };
   return (
     <div className="flex flex-col w-full mx-auto gap-9 bg-white shadow-md rounded-lg overflow-hidden">
       <div className="flex flex-col md:flex-row lg:w-1/2 md:w-full gap-6 p-4">
@@ -408,6 +417,11 @@ function TableComponent() {
                     Fecha Registro
                   </p>
                 </th>
+                <th className="p-4 border-b border-slate-200 bg-slate-50">
+                  <p className="text-sm font-normal leading-none ext-slate-900">
+                    Acciones
+                  </p>
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -423,10 +437,11 @@ function TableComponent() {
               ) : (
                 filteredData.map((item, i) => (
                   <tr
+                    onClick={() => handleIdChange(item._id)}
                     key={i}
-                    className="hover:bg-slate-50 border-b border-slate-200"
+                    className="hover:bg-slate-200 border-b border-slate-200"
                   >
-                    <td className="p-4 py-2">
+                    <td className="p-4 py-2 ">
                       <p className="text-sm text-slate-500">
                         {item.person[0].dni}
                       </p>
@@ -500,6 +515,13 @@ function TableComponent() {
                       <p className="text-sm text-slate-500">
                         {fecha(item.createdAt)}
                       </p>
+                    </td>
+                    <td className="p-4 py-2">
+                      <Link to={`/home/desinfection/${item._id}`}>
+                        <button className="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-white bg-slate-800 border border-slate-800 rounded hover:bg-slate-600 hover:border-slate-600 transition duration-200 ease">
+                          Detalle
+                        </button>
+                      </Link>
                     </td>
                   </tr>
                 ))

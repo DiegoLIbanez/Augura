@@ -10,7 +10,7 @@ export const fetchtypeVehicle = createAsyncThunk(
 );
 
 const initialState = {
-  typeVehicle: [],
+  data: [],
   loading: false,
   error: null,
 };
@@ -24,7 +24,7 @@ export const typeVehicleSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(fetchtypeVehicle.fulfilled, (state, action) => {
-      state.typeVehicle = action.payload;
+      state.data = action.payload;
     });
     builder.addCase(fetchtypeVehicle.rejected, (state, action) => {
       state.loading = false;

@@ -10,7 +10,7 @@ export const fetchstatusDesinfection = createAsyncThunk(
 );
 
 const initialState = {
-  statusDesinfection: [],
+  data: [],
   loading: false,
   error: null,
 };
@@ -24,7 +24,7 @@ export const statusDesinfectionSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(fetchstatusDesinfection.fulfilled, (state, action) => {
-      state.statusDesinfection = action.payload;
+      state.data = action.payload;
     });
     builder.addCase(fetchstatusDesinfection.rejected, (state, action) => {
       state.loading = false;

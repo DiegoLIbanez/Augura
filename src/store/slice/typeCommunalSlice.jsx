@@ -10,7 +10,7 @@ export const fetchtypeCommunal = createAsyncThunk(
 );
 
 const initialState = {
-  typeCommunal: [],
+  data: [],
   loading: false,
   error: null,
 };
@@ -24,7 +24,7 @@ export const typeCommunalSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(fetchtypeCommunal.fulfilled, (state, action) => {
-      state.typeCommunal = action.payload;
+      state.data = action.payload;
     });
     builder.addCase(fetchtypeCommunal.rejected, (state, action) => {
       state.loading = false;

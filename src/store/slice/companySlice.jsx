@@ -1,13 +1,16 @@
-import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getService } from "../services/companyService";
 
 // Obtener usuarios (asyncThunk)
-export const fetchCompany = createAsyncThunk("company/fetchCompany", async () => {
-  return await getService();
-});
+export const fetchCompany = createAsyncThunk(
+  "company/fetchCompany",
+  async () => {
+    return await getService();
+  }
+);
 
 const initialState = {
-  company: [],
+  data: [],
   loading: false,
   error: null,
 };
@@ -21,7 +24,7 @@ export const companySlice = createSlice({
       state.loading = true;
     });
     builder.addCase(fetchCompany.fulfilled, (state, action) => {
-      state.company = action.payload;
+      state.data = action.payload;
     });
     builder.addCase(fetchCompany.rejected, (state, action) => {
       state.loading = false;

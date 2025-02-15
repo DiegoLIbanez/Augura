@@ -10,7 +10,7 @@ export const fetchtypeInput = createAsyncThunk(
 );
 
 const initialState = {
-  typeInput: [],
+  data: [],
   loading: false,
   error: null,
 };
@@ -24,7 +24,7 @@ export const typeInputSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(fetchtypeInput.fulfilled, (state, action) => {
-      state.typeInput = action.payload;
+      state.data = action.payload;
     });
     builder.addCase(fetchtypeInput.rejected, (state, action) => {
       state.loading = false;

@@ -2,11 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 
 import Sidebar from "../Sidebar/Sidebar";
 
-//Redux 
+//Redux
 import { useSelector } from "react-redux";
 
 function Navbar() {
-
   const infoAuth = useSelector((store) => store.auth.data);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
@@ -56,7 +55,7 @@ function Navbar() {
 
               <div className="flex ms-2 md:me-24">
                 <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
-                 {infoAuth.user}
+                  {infoAuth.user}
                 </span>
               </div>
             </div>
@@ -68,15 +67,27 @@ function Navbar() {
                     ref={profileButtonRef}
                     onClick={toggleProfileDropdown}
                     type="button"
-                    className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                    className="flex text bg-amber-100-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
                     aria-expanded={isProfileDropdownOpen}
                   >
                     <span className="sr-only">Open user menu</span>
-                    <img
-                      className="w-8 h-8 rounded-full"
-                      src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                      alt="user profile"
-                    />
+                    <svg
+                      className="w-8 h-8 bg-amber-50 rounded-3xl text-gray-800 dark:text-gray-300"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 100 100"
+                    >
+                      <text
+                        x="50%"
+                        y="50%"
+                        font-size="48"
+                        font-family="Arial"
+                        fill="black"
+                        text-anchor="middle"
+                        dominant-baseline="middle"
+                      >
+                        A
+                      </text>
+                    </svg>
                   </button>
                 </div>
 

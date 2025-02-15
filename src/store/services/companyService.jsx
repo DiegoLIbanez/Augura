@@ -1,7 +1,7 @@
 import axios from "axios";
 
 //Config routes
-import { API_ROUTES } from '../../api/apiConfig';
+import { API_ROUTES } from "../../api/apiConfig";
 
 const api = axios.create({
   baseURL: API_ROUTES.COMPANY,

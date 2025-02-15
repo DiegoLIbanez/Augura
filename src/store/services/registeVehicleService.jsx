@@ -16,6 +16,12 @@ export const getService = async () => {
   return data;
 };
 
+// Obtener por id
+export const getServiceById = async (id) => {
+  const { data } = await api.get(`/${id}`);
+  return data;
+};
+
 // Crear
 // export const createUser = async (userData) => {
 //   const response = await api.post("/", userData);

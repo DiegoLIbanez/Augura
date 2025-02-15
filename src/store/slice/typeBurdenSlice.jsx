@@ -10,7 +10,7 @@ export const fetchTypeBurden = createAsyncThunk(
 );
 
 const initialState = {
-  typeBurden: [],
+  data: [],
   loading: false,
   error: null,
 };
@@ -24,7 +24,7 @@ export const typeBurdenSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(fetchTypeBurden.fulfilled, (state, action) => {
-      state.typeBurden = action.payload;
+      state.data = action.payload;
     });
     builder.addCase(fetchTypeBurden.rejected, (state, action) => {
       state.loading = false;
