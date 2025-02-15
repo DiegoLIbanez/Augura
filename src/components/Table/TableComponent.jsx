@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
+
+//Redux
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchregisterVehicleSlice,
@@ -22,14 +24,13 @@ function TableComponent() {
   const [search, setSearch] = useState("");
   const [typeVehicleinput, settypeVehicleinput] = useState("---Todos---");
   const [companyinput, setcompanyinput] = useState("---Todos---");
-  const [statusDesinfectioninput, setstatusDesinfectioninput] =
-    useState("---Todos---");
+  const [statusDesinfectioninput, setstatusDesinfectioninput] = useState("---Todos---");
   const [typeBurdeninput, settypeBurdeninput] = useState("---Todos---");
   const [typeCommunalinput, settypeCommunalinput] = useState("---Todos---");
   const [typeInputinput, settypeInputinput] = useState("---Todos---");
   const [filteredData, setFilteredData] = useState([]);
 
-  //  Estados para las fechas
+  //Estados para las fechas
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
@@ -37,9 +38,7 @@ function TableComponent() {
   const registerVehicle = useSelector((state) => state.registerVehicle.data);
   const typeVehicle = useSelector((state) => state.typeVehicle.data);
   const company = useSelector((state) => state.company.data);
-  const statusDesinfection = useSelector(
-    (state) => state.statusDesinfection.data
-  );
+  const statusDesinfection = useSelector((state) => state.statusDesinfection.data);
   const typeBurden = useSelector((state) => state.typeBurden.data);
   const typeCommunal = useSelector((state) => state.typeCommunal.data);
   const typeInput = useSelector((state) => state.typeInput.data);
@@ -121,8 +120,7 @@ function TableComponent() {
   // Manejo de los cambios en los filtros
   const handleProjectChange = (e) => settypeVehicleinput(e.target.value);
   const handleCompanyChange = (e) => setcompanyinput(e.target.value);
-  const handleStatusDesinfectionChange = (e) =>
-    setstatusDesinfectioninput(e.target.value);
+  const handleStatusDesinfectionChange = (e) => setstatusDesinfectioninput(e.target.value);
   const handleTypeBurdenChange = (e) => settypeBurdeninput(e.target.value);
   const handleTypeCommunalChange = (e) => settypeCommunalinput(e.target.value);
   const handleTypeInputChange = (e) => settypeInputinput(e.target.value);

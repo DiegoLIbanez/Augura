@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 
 //Views
 import ListDisinfect from "../register-disinfect/list/List";
+import RegisterDisinfect from "../register-disinfect/create/Create";
 
 //Components
 import Navbar from "../../components/Navbar/Navbar";
@@ -17,8 +18,12 @@ function Home() {
     <>
       <div className="flex flex-col min-h-screen">
         <Navbar />
-        <div className="container sm:px-6 lg:px-8 py-20">
-          {views.listDisinfect === true ? <ListDisinfect /> : <></>}
+        <div className="mt-20 sm:px-6 lg:px-8 py-20">
+          { 
+            views.listDisinfect === true ? <ListDisinfect /> :
+            views.registerDisinfect === true ? <RegisterDisinfect /> :
+            <></> 
+          }
         </div>
       </div>
     </>

@@ -79,11 +79,11 @@ function Navbar() {
                       <text
                         x="50%"
                         y="50%"
-                        font-size="48"
-                        font-family="Arial"
+                        fontSize="48"
+                        fontFamily="Arial"
                         fill="black"
-                        text-anchor="middle"
-                        dominant-baseline="middle"
+                        textAnchor="middle"
+                        dominantBaseline="middle"
                       >
                         A
                       </text>

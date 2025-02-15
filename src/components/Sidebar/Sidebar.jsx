@@ -30,10 +30,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
       ]);
     } else if (infoRole === "Usuario") {
       setMenu([
-        {
-          name: "Regitrar desinfeccion",
-          function: () => setViews({ listDisinfect: true }),
-        },
+        { name: "Registrar desinfeccion", function: () => setViews({ registerDisinfect: true }) }
       ]);
     }
   }, []);
