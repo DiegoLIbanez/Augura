@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 
 //icons
 import { FaUserCircle } from "react-icons/fa";
-import { HiDocumentReport } from "react-icons/hi";
+import { HiDocumentReport, HiOutlineDocumentReport } from "react-icons/hi";
 import { PiListChecksFill } from "react-icons/pi";
 
 function Sidebar({ isOpen, toggleSidebar }) {
@@ -25,12 +25,20 @@ function Sidebar({ isOpen, toggleSidebar }) {
           icon: <PiListChecksFill />,
           function: () => setViews({ listDisinfect: true }),
         },
+        {
+          name: "Consumo de Agua",
+          icon: <HiOutlineDocumentReport />,
+          function: () => setViews({ waterConsumption: true }),
+        },
         { name: "Usuarios", icon: <FaUserCircle />, path: "/users" },
         { name: "Reportes", icon: <HiDocumentReport />, path: "/reports" },
       ]);
     } else if (infoRole === "Usuario") {
       setMenu([
-        { name: "Registrar desinfeccion", function: () => setViews({ registerDisinfect: true }) }
+        {
+          name: "Registrar desinfeccion",
+          function: () => setViews({ registerDisinfect: true }),
+        },
       ]);
     }
   }, []);

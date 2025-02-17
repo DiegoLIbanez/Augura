@@ -11,4 +11,5 @@ export const API_ROUTES = {
   TYPE_BURDEN: `${API_BASE_URL}/v1/type-burden/`,
   TYPE_COMMUNAL: `${API_BASE_URL}/v1/type-communal/`,
   TYPE_INPUT: `${API_BASE_URL}/v1/type-input/`,
+  WATER_CONSUMPTION: `${API_BASE_URL}/v1/consumption/`,
 };

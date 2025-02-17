@@ -2,7 +2,10 @@ import React, { useCallback, useEffect, useState } from "react";
 
 //Redux
 import { useDispatch, useSelector } from "react-redux";
-import { fetchregisterVehicleSlice,fetchregisterVehicleByIdSlice } from "../../store/slice/registeVehicleSlice";
+import {
+  fetchregisterVehicleSlice,
+  fetchregisterVehicleByIdSlice,
+} from "../../store/slice/registeVehicleSlice";
 import { fetchtypeVehicle } from "../../store/slice/typeVehicleSlice";
 import { fetchstatusDesinfection } from "../../store/slice/statusDesinfectionSlice";
 import { fetchTypeBurden } from "../../store/slice/typeBurdenSlice";
@@ -11,8 +14,11 @@ import { fetchtypeInput } from "../../store/slice/typeInputSlice";
 import { utils, writeFile } from "xlsx";
 import { transformDataForExport } from "../../services/transformDataForExport";
 import { vehicleFilter } from "../../services/vihecleFilter";
-import { Link } from "react-router-dom";
 import { fetchCompany } from "../../store/slice/companySlice";
+import { fecha } from "../../services/formatDate";
+
+//icon
+import { RiFileExcel2Line } from "react-icons/ri";
 
 function TableComponent({ setView }) {
   const dispatch = useDispatch();
@@ -21,7 +27,8 @@ function TableComponent({ setView }) {
   const [search, setSearch] = useState("");
   const [typeVehicleinput, settypeVehicleinput] = useState("---Todos---");
   const [companyinput, setcompanyinput] = useState("---Todos---");
-  const [statusDesinfectioninput, setstatusDesinfectioninput] = useState("---Todos---");
+  const [statusDesinfectioninput, setstatusDesinfectioninput] =
+    useState("---Todos---");
   const [typeBurdeninput, settypeBurdeninput] = useState("---Todos---");
   const [typeCommunalinput, settypeCommunalinput] = useState("---Todos---");
   const [typeInputinput, settypeInputinput] = useState("---Todos---");
@@ -35,22 +42,12 @@ function TableComponent({ setView }) {
   const registerVehicle = useSelector((state) => state.registerVehicle.data);
   const typeVehicle = useSelector((state) => state.typeVehicle.data);
   const company = useSelector((state) => state.company.data);
-  const statusDesinfection = useSelector((state) => state.statusDesinfection.data);
+  const statusDesinfection = useSelector(
+    (state) => state.statusDesinfection.data
+  );
   const typeBurden = useSelector((state) => state.typeBurden.data);
   const typeCommunal = useSelector((state) => state.typeCommunal.data);
   const typeInput = useSelector((state) => state.typeInput.data);
-
-  console.log(company);
-  // Funcion para formatear la fecha
-  const fecha = useCallback((dateMongo) => {
-    const date = new Date(dateMongo);
-    const dia = String(date.getDate()).padStart(2, "0");
-    const mes = String(date.getMonth() + 1).padStart(2, "0");
-    const año = date.getFullYear();
-    const horas = String(date.getHours()).padStart(2, "0");
-    const minutos = String(date.getMinutes()).padStart(2, "0");
-    return `${dia}/${mes}/${año} ${horas}:${minutos}`;
-  }, []);
 
   // Funcion para exportar
   const handleExport = (exportAll = false) => {
@@ -75,7 +72,7 @@ function TableComponent({ setView }) {
       alert("Error al generar el archivo");
     }
   };
-  
+
   // Cargar los datos
   useEffect(() => {
     dispatch(fetchtypeVehicle());
@@ -118,19 +115,20 @@ function TableComponent({ setView }) {
   // Manejo de los cambios en los filtros
   const handleProjectChange = (e) => settypeVehicleinput(e.target.value);
   const handleCompanyChange = (e) => setcompanyinput(e.target.value);
-  const handleStatusDesinfectionChange = (e) => setstatusDesinfectioninput(e.target.value);
+  const handleStatusDesinfectionChange = (e) =>
+    setstatusDesinfectioninput(e.target.value);
   const handleTypeBurdenChange = (e) => settypeBurdeninput(e.target.value);
   const handleTypeCommunalChange = (e) => settypeCommunalinput(e.target.value);
   const handleTypeInputChange = (e) => settypeInputinput(e.target.value);
 
-  const handleIdChange = (e) => { 
-    dispatch(fetchregisterVehicleByIdSlice(e)); 
+  const handleIdChange = (e) => {
+    dispatch(fetchregisterVehicleByIdSlice(e));
   };
 
   const handleClickprb = (item) => {
-    setView({detail:true});
+    setView({ detail: true });
     console.log(item);
-  }
+  };
 
   return (
     <div className="flex flex-col w-full mx-auto gap-9 bg-white shadow-md rounded-lg overflow-hidden">
@@ -521,9 +519,12 @@ function TableComponent({ setView }) {
                     </td>
                     <td className="p-4 py-2">
                       {/* <Link to={`/home/desinfection/${item._id}`}> */}
-                        <button onClick={() => handleClickprb(item) } className="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-white bg-slate-800 border border-slate-800 rounded hover:bg-slate-600 hover:border-slate-600 transition duration-200 ease">
-                          Detalle
-                        </button>
+                      <button
+                        onClick={() => handleClickprb(item)}
+                        className="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-white bg-slate-800 border border-slate-800 rounded hover:bg-slate-600 hover:border-slate-600 transition duration-200 ease"
+                      >
+                        Detalle
+                      </button>
                       {/* </Link> */}
                     </td>
                   </tr>

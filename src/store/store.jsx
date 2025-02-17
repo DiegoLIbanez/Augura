@@ -9,6 +9,7 @@ import typeBurdenSlice from "./slice/typeBurdenSlice";
 import typeCommunalSlice from "./slice/typeCommunalSlice";
 import typeInputSlice from "./slice/typeInputSlice";
 import authSlice from "./slice/authSlice";
+import waterConsumptionSlice from "./slice/waterConsumtionSlice";
 
 // import loginSlice from "./slice/loginSlice";
 
@@ -22,5 +23,6 @@ export default configureStore({
     typeBurden: typeBurdenSlice,
     typeCommunal: typeCommunalSlice,
     typeInput: typeInputSlice,
+    waterConsumption: waterConsumptionSlice,
   },
 });
