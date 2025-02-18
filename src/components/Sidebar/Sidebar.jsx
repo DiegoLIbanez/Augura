@@ -11,7 +11,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { HiDocumentReport, HiOutlineDocumentReport } from "react-icons/hi";
 import { PiListChecksFill } from "react-icons/pi";
 
-function Sidebar({ isOpen, toggleSidebar }) {
+function Sidebar({ isOpen }) {
   //Manejo de las vistas
   const { setViews } = useContext(ViewsContext);
   const infoRole = useSelector((store) => store.auth.data.role);

@@ -1,60 +1,63 @@
-import React, { useCallback, useEffect, useState } from "react";
-
+import { useDispatch } from "react-redux";
 //Redux
-import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchregisterVehicleSlice,
-  fetchregisterVehicleByIdSlice,
-} from "../../store/slice/registeVehicleSlice";
-import { fetchtypeVehicle } from "../../store/slice/typeVehicleSlice";
-import { fetchstatusDesinfection } from "../../store/slice/statusDesinfectionSlice";
-import { fetchTypeBurden } from "../../store/slice/typeBurdenSlice";
-import { fetchtypeCommunal } from "../../store/slice/typeCommunalSlice";
-import { fetchtypeInput } from "../../store/slice/typeInputSlice";
+
+import { fetchregisterVehicleByIdSlice } from "../../store/slice/registeVehicleSlice";
+
 import { utils, writeFile } from "xlsx";
 import { transformDataForExport } from "../../services/transformDataForExport";
-import { vehicleFilter } from "../../services/vihecleFilter";
-import { fetchCompany } from "../../store/slice/companySlice";
+
 import { fecha } from "../../services/formatDate";
+import Swal from "sweetalert2";
 
-//icon
-import { RiFileExcel2Line } from "react-icons/ri";
-
-function TableComponent({ setView }) {
+function TableComponent({
+  setView,
+  search,
+  setSearch,
+  typeVehicleinput,
+  companyinput,
+  statusDesinfectioninput,
+  typeBurdeninput,
+  typeCommunalinput,
+  typeInputinput,
+  startDate,
+  setStartDate,
+  endDate,
+  setEndDate,
+  filteredData,
+  handleProjectChange,
+  handleCompanyChange,
+  handleStatusDesinfectionChange,
+  handleTypeBurdenChange,
+  handleTypeCommunalChange,
+  handleTypeInputChange,
+  typeVehicle,
+  company,
+  statusDesinfection,
+  typeBurden,
+  typeCommunal,
+  typeInput,
+}) {
+  //dispatch
   const dispatch = useDispatch();
 
-  // Estados para los filtros
-  const [search, setSearch] = useState("");
-  const [typeVehicleinput, settypeVehicleinput] = useState("---Todos---");
-  const [companyinput, setcompanyinput] = useState("---Todos---");
-  const [statusDesinfectioninput, setstatusDesinfectioninput] =
-    useState("---Todos---");
-  const [typeBurdeninput, settypeBurdeninput] = useState("---Todos---");
-  const [typeCommunalinput, settypeCommunalinput] = useState("---Todos---");
-  const [typeInputinput, settypeInputinput] = useState("---Todos---");
-  const [filteredData, setFilteredData] = useState([]);
+  const countVehicleDesinfection = filteredData.filter(
+    (data) => data.statusDesinfection[0].description === "NO"
+  ).length;
 
-  //Estados para las fechas
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-
-  // Datos de los estados
-  const registerVehicle = useSelector((state) => state.registerVehicle.data);
-  const typeVehicle = useSelector((state) => state.typeVehicle.data);
-  const company = useSelector((state) => state.company.data);
-  const statusDesinfection = useSelector(
-    (state) => state.statusDesinfection.data
+  const countVehicleNoDesinfection = filteredData.filter(
+    (data) => data.statusDesinfection[0].description === "SI"
   );
-  const typeBurden = useSelector((state) => state.typeBurden.data);
-  const typeCommunal = useSelector((state) => state.typeCommunal.data);
-  const typeInput = useSelector((state) => state.typeInput.data);
 
   // Funcion para exportar
   const handleExport = (exportAll = false) => {
     const sourceData = exportAll ? registerVehicle?.data || [] : filteredData;
 
     if (!sourceData || sourceData.length === 0) {
-      alert("No hay datos para exportar");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No hay datos para exportar",
+      });
       return;
     }
 
@@ -69,65 +72,17 @@ function TableComponent({ setView }) {
       );
     } catch (error) {
       console.error("Error al exportar:", error);
-      alert("Error al generar el archivo");
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Ocurrió un error al exportar los datos",
+      });
     }
   };
 
-  // Cargar los datos
-  useEffect(() => {
-    dispatch(fetchtypeVehicle());
-    dispatch(fetchCompany());
-    dispatch(fetchregisterVehicleSlice());
-    dispatch(fetchstatusDesinfection());
-    dispatch(fetchTypeBurden());
-    dispatch(fetchtypeCommunal());
-    dispatch(fetchtypeInput());
-  }, [dispatch]);
-
-  // Filtrar los datos
-  useEffect(() => {
-    const filtered = vehicleFilter(
-      registerVehicle,
-      typeVehicleinput,
-      companyinput,
-      statusDesinfectioninput,
-      typeBurdeninput,
-      typeCommunalinput,
-      typeInputinput,
-      search,
-      startDate,
-      endDate
-    );
-    setFilteredData(filtered);
-  }, [
-    registerVehicle,
-    typeVehicleinput,
-    companyinput,
-    statusDesinfectioninput,
-    typeBurdeninput,
-    typeCommunalinput,
-    typeInputinput,
-    search,
-    startDate,
-    endDate,
-  ]);
-
-  // Manejo de los cambios en los filtros
-  const handleProjectChange = (e) => settypeVehicleinput(e.target.value);
-  const handleCompanyChange = (e) => setcompanyinput(e.target.value);
-  const handleStatusDesinfectionChange = (e) =>
-    setstatusDesinfectioninput(e.target.value);
-  const handleTypeBurdenChange = (e) => settypeBurdeninput(e.target.value);
-  const handleTypeCommunalChange = (e) => settypeCommunalinput(e.target.value);
-  const handleTypeInputChange = (e) => settypeInputinput(e.target.value);
-
-  const handleIdChange = (e) => {
-    dispatch(fetchregisterVehicleByIdSlice(e));
-  };
-
-  const handleClickprb = (item) => {
+  const handleClickprb = (id) => {
     setView({ detail: true });
-    console.log(item);
+    dispatch(fetchregisterVehicleByIdSlice(id));
   };
 
   return (
@@ -170,19 +125,36 @@ function TableComponent({ setView }) {
         </div>
       </div>
       <div>
-        <div className="flex flex-col md:flex-row lg:w-1/2 md:w-full gap-6 p-4">
-          <button
-            onClick={() => handleExport(false)}
-            className="h-[42px] px-4 text-sm bg-green-600 hover:bg-green-700 text-white rounded-md transition-colors"
-          >
-            Exportar Filtrados
-          </button>
-          <button
-            onClick={() => handleExport(true)}
-            className="h-[42px] px-4 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
-          >
-            Exportar Todos
-          </button>
+        <div>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4">
+            <div className="flex gap-6">
+              <button
+                onClick={() => handleExport(false)}
+                className="h-[42px] px-4 text-sm bg-green-600 hover:bg-green-700 text-white rounded-md transition-colors"
+              >
+                Exportar Filtrados
+              </button>
+              <button
+                onClick={() => handleExport(true)}
+                className="h-[42px] px-4 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
+              >
+                Exportar Todos
+              </button>
+            </div>
+
+            <div className="flex gap-4">
+              <div className="bg-red-100 px-3 py-1 rounded-md">
+                <span className="text-red-700 font-medium">
+                  Vehiculos No Desinfectados: {countVehicleDesinfection}
+                </span>
+              </div>
+              <div className="bg-green-100 px-3 py-1 rounded-md">
+                <span className="text-green-700 font-medium">
+                  Vehiculos Desinfectados: {countVehicleNoDesinfection.length}
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div className="flex flex-col w-full mx-auto bg-white shadow-md rounded-lg overflow-hidden">
@@ -438,7 +410,6 @@ function TableComponent({ setView }) {
               ) : (
                 filteredData.map((item, i) => (
                   <tr
-                    onClick={() => handleIdChange(item._id)}
                     key={i}
                     className="hover:bg-slate-200 border-b border-slate-200"
                   >
@@ -520,7 +491,7 @@ function TableComponent({ setView }) {
                     <td className="p-4 py-2">
                       {/* <Link to={`/home/desinfection/${item._id}`}> */}
                       <button
-                        onClick={() => handleClickprb(item)}
+                        onClick={() => handleClickprb(item._id)}
                         className="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-white bg-slate-800 border border-slate-800 rounded hover:bg-slate-600 hover:border-slate-600 transition duration-200 ease"
                       >
                         Detalle

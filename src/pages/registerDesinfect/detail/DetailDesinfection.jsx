@@ -5,16 +5,11 @@ import { useParams } from "react-router-dom";
 import { fecha } from "../../../services/formatDate";
 
 const DetailDesinfection = ({ setView }) => {
-  const { id } = useParams();
   const dispatch = useDispatch();
   const registerVehicleId = useSelector(
     (state) => state.registerVehicle.registerVehicleId.data
   );
-
-  useEffect(() => {
-    dispatch(fetchregisterVehicleByIdSlice(id));
-  }, [dispatch, id]);
-
+  console.log(registerVehicleId);
   if (!registerVehicleId || registerVehicleId.length === 0) {
     return <div>Cargando...</div>;
   }

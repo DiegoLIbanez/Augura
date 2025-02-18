@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 
 //Pages
-import ListDisinfect from "../register-disinfect/list/List";
-import RegisterDisinfect from "../register-disinfect/create/Create";
+import ListDisinfect from "../registerDesinfect/list/List";
+import RegisterDisinfect from "../registerDesinfect/create/Create";
 import ListWaterConsumption from "../waterConsumption/list/List";
 
 //Components
