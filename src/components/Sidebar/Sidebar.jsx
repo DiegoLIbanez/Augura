@@ -31,7 +31,11 @@ function Sidebar({ isOpen }) {
           function: () => setViews({ waterConsumption: true }),
         },
         { name: "Usuarios", icon: <FaUserCircle />, path: "/users" },
-        { name: "Reportes", icon: <HiDocumentReport />, path: "/reports" },
+        {
+          name: "Reportes",
+          icon: <HiDocumentReport />,
+          function: () => setViews({ graph: true }),
+        },
       ]);
     } else if (infoRole === "Usuario") {
       setMenu([

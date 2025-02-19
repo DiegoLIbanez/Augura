@@ -4,6 +4,7 @@ import React, { useContext } from "react";
 import ListDisinfect from "../registerDesinfect/list/List";
 import RegisterDisinfect from "../registerDesinfect/create/Create";
 import ListWaterConsumption from "../waterConsumption/list/List";
+import GraphList from "../graph/Graph";
 
 //Components
 import Navbar from "../../components/Navbar/Navbar";
@@ -26,6 +27,8 @@ function Home() {
             <RegisterDisinfect />
           ) : views.waterConsumption === true ? (
             <ListWaterConsumption />
+          ) : views.graph === true ? (
+            <GraphList />
           ) : (
             <></>
           )}
