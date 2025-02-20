@@ -372,9 +372,9 @@ function List() {
                     </div>
                   </div>
                 </div>
-            </div>
+              </div>
 
-            <TableComponent setView={setView} {...tableProps} />
+              <TableComponent setView={setView} {...tableProps} />
 
             </div>
         </>

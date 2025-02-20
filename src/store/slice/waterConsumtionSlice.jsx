@@ -2,9 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { createUser, getService } from "../services/waterConsumptionService";
 
 // Obtener usuarios (asyncThunk)
-export const fetchWaterConsumption = createAsyncThunk(
-  "waterConsumption/fetchWaterConsumption",
-  async () => {
+export const fetchWaterConsumption = createAsyncThunk("waterConsumption/fetchWaterConsumption", async () => {
     return await getService();
   }
 );
@@ -15,6 +13,7 @@ export const createWaterConsumption = async (userData) => {
 };
 
 const initialState = {
+  statusCode:0,
   data: [],
   loading: false,
   error: null,
@@ -25,12 +24,12 @@ export const waterConsumptionSlice = createSlice({
   initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
-    // obtener registros
     builder.addCase(fetchWaterConsumption.pending, (state) => {
       state.loading = true;
     });
     builder.addCase(fetchWaterConsumption.fulfilled, (state, action) => {
-      state.data = action.payload;
+      state.data = action.payload.data;
+      state.statusCode = action.payload.statusCode;
     });
     builder.addCase(fetchWaterConsumption.rejected, (state, action) => {
       state.loading = false;

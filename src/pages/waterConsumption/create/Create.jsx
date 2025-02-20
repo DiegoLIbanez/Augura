@@ -9,7 +9,9 @@ import { fetchtypeCommunal } from "../../../store/slice/typeCommunalSlice";
 import { createWaterConsumption } from "../../../store/slice/waterConsumtionSlice";
 
 const ConsumptionForm = ({ setView }) => {
+
   const dispatch = useDispatch();
+
   const [formData, setFormData] = useState({
     waterConsumption: "",
     disinfectantConsumption: "",
@@ -19,7 +21,6 @@ const ConsumptionForm = ({ setView }) => {
   const typeCommunal = useSelector((state) => state.typeCommunal.data);
 
   // limpiar el formulario
-
   const clearForm = () => {
     setFormData({
       waterConsumption: "",
