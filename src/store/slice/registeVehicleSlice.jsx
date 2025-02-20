@@ -1,27 +1,24 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getService, getServiceById } from "../services/registeVehicleService";
-import { current } from "immer"; // Importa current de immer
+import { getService, getServiceById,createService } from "../services/registeVehicleService";
 
 // Obtener usuarios (asyncThunk)
-export const fetchregisterVehicleSlice = createAsyncThunk(
-  "registerVehicle/fetregisterVehicle",
-  async () => {
+export const fetchregisterVehicleSlice = createAsyncThunk("registerVehicle/fetregisterVehicle",async () => {
     return await getService();
-  }
-);
+  });
 
 // obtener el registerVehicle por id
-
-export const fetchregisterVehicleByIdSlice = createAsyncThunk(
-  "registerVehicle/fetregisterVehicleById",
-  async (id) => {
+export const fetchregisterVehicleByIdSlice = createAsyncThunk("registerVehicle/fetregisterVehicleById",async (id) => {
     return await getServiceById(id);
-  }
-);
+  });
+
+export const createRegisterVehicleSlice = async (body) => {
+  return await createService(body);
+}
 
 const initialState = {
-  data: [], // Cambiado a un array vacío
-  registerVehicleId: {}, // Cambiado a un array vacío
+  statusCode:0,
+  data: [],
+  registerVehicleId: {},
   loading: false,
   error: null,
 };
@@ -31,11 +28,13 @@ export const registerVehicleSlice = createSlice({
   initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
+
     builder.addCase(fetchregisterVehicleSlice.pending, (state) => {
       state.loading = true;
     });
     builder.addCase(fetchregisterVehicleSlice.fulfilled, (state, action) => {
-      state.data = action.payload;
+      state.data = action.payload.data;
+      state.statusCode = action.payload.statusCode;
       state.loading = false;
     });
     builder.addCase(fetchregisterVehicleSlice.rejected, (state, action) => {
@@ -58,6 +57,7 @@ export const registerVehicleSlice = createSlice({
       state.loading = false;
       state.error = action.error;
     });
+
   },
 });
 

@@ -4,7 +4,7 @@ import axios from "axios";
 import { API_ROUTES } from "../../api/apiConfig";
 
 const api = axios.create({
-  baseURL: API_ROUTES.REGISTER_VEHICLE,
+  baseURL: API_ROUTES.VEHICLE,
   headers: {
     "Content-Type": "application/json",
   },
@@ -12,19 +12,7 @@ const api = axios.create({
 
 // Obtener
 export const getService = async () => {
-  const { data } = await api.get("/");
-  return data;
-};
-
-// Obtener por id
-export const getServiceById = async (id) => {
-  const { data } = await api.get(`/${id}`);
-  return data;
-};
-
-// Crear
-export const createService = async (body) => {
-  const response = await api.post(`/`,body);
+  const response = await api.get("/");
   return response.data;
 };
 

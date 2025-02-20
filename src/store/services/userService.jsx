@@ -4,27 +4,21 @@ import axios from "axios";
 import { API_ROUTES } from "../../api/apiConfig";
 
 const api = axios.create({
-  baseURL: API_ROUTES.REGISTER_VEHICLE,
+  baseURL: API_ROUTES.USER,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// Obtener
-export const getService = async () => {
-  const { data } = await api.get("/");
-  return data;
+// Obtener todos los usuarios
+export const getAllService = async () => {
+  const response = await api.get("/");
+  return response.data;
 };
 
-// Obtener por id
-export const getServiceById = async (id) => {
-  const { data } = await api.get(`/${id}`);
-  return data;
-};
-
-// Crear
-export const createService = async (body) => {
-  const response = await api.post(`/`,body);
+// Obtener solo los usuarios conductores
+export const getAllDriverService = async (id) => {
+  const response = await api.get("/driver/"+id);
   return response.data;
 };
 

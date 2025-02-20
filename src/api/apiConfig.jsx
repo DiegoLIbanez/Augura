@@ -1,10 +1,10 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const API_ROUTES = {
-  LOGIN: `${API_BASE_URL}/v1/login`,
-  COMPANY: `${API_BASE_URL}/v1/company`,
-  POSTS: `${API_BASE_URL}/posts`,
-  COMMENTS: `${API_BASE_URL}/comments`,
+  LOGIN: `${API_BASE_URL}/v1/login/`,
+  USER: `${API_BASE_URL}/v1/person/`,
+  COMPANY: `${API_BASE_URL}/v1/company/`,
+  VEHICLE: `${API_BASE_URL}/v1/vehicle/`,
   REGISTER_VEHICLE: `${API_BASE_URL}/v1/register-vehicle/`,
   TYPE_VEHICLE: `${API_BASE_URL}/v1/type-vehicle/`,
   STATUS_DESINFECTION: `${API_BASE_URL}/v1/status-desinfection/`,

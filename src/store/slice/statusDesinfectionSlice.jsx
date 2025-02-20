@@ -2,9 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getService } from "../services/statusDesinfectionService";
 
 // Obtener usuarios (asyncThunk)
-export const fetchstatusDesinfection = createAsyncThunk(
-  "statusDesinfection/fetchStatusDesinfection",
-  async () => {
+export const fetchstatusDesinfection = createAsyncThunk("statusDesinfection/fetchStatusDesinfection", async () => {
     return await getService();
   }
 );

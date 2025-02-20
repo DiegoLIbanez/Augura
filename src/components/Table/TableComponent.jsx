@@ -1,535 +1,118 @@
-import { useDispatch } from "react-redux";
-//Redux
+import React,{ useState } from "react";
 
-import { fetchregisterVehicleByIdSlice } from "../../store/slice/registeVehicleSlice";
+//Components
+// import Pagination from "../Pagination/Pagination";
 
-import { utils, writeFile } from "xlsx";
-import { transformDataForExport } from "../../services/transformDataForExport";
+function TableComponent({ setView, ...props }) {
 
-import { fecha } from "../../services/formatDate";
-import Swal from "sweetalert2";
+  const {
+    dataList,
+    header,
+    columns
+  } = props;
 
-function TableComponent({
-  setView,
-  search,
-  setSearch,
-  typeVehicleinput,
-  companyinput,
-  statusDesinfectioninput,
-  typeBurdeninput,
-  typeCommunalinput,
-  typeInputinput,
-  startDate,
-  setStartDate,
-  endDate,
-  setEndDate,
-  filteredData,
-  handleProjectChange,
-  handleCompanyChange,
-  handleStatusDesinfectionChange,
-  handleTypeBurdenChange,
-  handleTypeCommunalChange,
-  handleTypeInputChange,
-  typeVehicle,
-  company,
-  statusDesinfection,
-  typeBurden,
-  typeCommunal,
-  typeInput,
-}) {
-  //dispatch
-  const dispatch = useDispatch();
+  const itemsPerPage = 10; // Cantidad de elementos por página
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const countVehicleDesinfection = filteredData.filter(
-    (data) => data.statusDesinfection[0].description === "NO"
-  ).length;
+  const totalPages = dataList.length > 0 ? Math.ceil(dataList.length / itemsPerPage) : 1;
 
-  const countVehicleNoDesinfection = filteredData.filter(
-    (data) => data.statusDesinfection[0].description === "SI"
-  );
+  // Obtener los datos de la página actual
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentData = dataList.slice(startIndex, endIndex);
 
-  // Funcion para exportar
-  const handleExport = (exportAll = false) => {
-    const sourceData = exportAll ? registerVehicle?.data || [] : filteredData;
-
-    if (!sourceData || sourceData.length === 0) {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "No hay datos para exportar",
-      });
-      return;
+  // Cambiar de página
+  const goToPage = (page) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
     }
-
-    try {
-      const transformedData = transformDataForExport(sourceData, fecha);
-      const worksheet = utils.json_to_sheet(transformedData);
-      const workbook = utils.book_new();
-      utils.book_append_sheet(workbook, worksheet, "Datos");
-      writeFile(
-        workbook,
-        `${exportAll ? "Todos_los_datos" : "Datos_filtrados"}.xlsx`
-      );
-    } catch (error) {
-      console.error("Error al exportar:", error);
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Ocurrió un error al exportar los datos",
-      });
-    }
-  };
-
-  const handleClickprb = (id) => {
-    setView({ detail: true });
-    dispatch(fetchregisterVehicleByIdSlice(id));
   };
 
   return (
-    <div className="flex flex-col w-full mx-auto gap-9 bg-white shadow-md rounded-lg overflow-hidden">
-      <div className="flex flex-col md:flex-row lg:w-1/2 md:w-full gap-6 p-4">
-        <div className="flex flex-col flex-1">
-          <label className="text-sm font-medium text-slate-800">
-            Fecha Inicial
-          </label>
-          <input
-            type="date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            className="mt-1 p-2 border rounded-md focus:ring-2 focus:ring-indigo-500"
-          />
-        </div>
-
-        <div className="flex flex-col flex-1">
-          <label className="text-sm font-medium text-slate-800">
-            Fecha Final
-          </label>
-          <input
-            type="date"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            className="mt-1 p-2 border rounded-md focus:ring-2 focus:ring-indigo-500"
-          />
-        </div>
-
-        <div className="flex flex-col justify-end">
-          <button
-            onClick={() => {
-              setStartDate("");
-              setEndDate("");
-            }}
-            className="h-[42px] px-4 text-sm bg-gray-200 hover:bg-gray-300 rounded-md transition-colors"
-          >
-            Limpiar fechas
-          </button>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4">
-            <div className="flex gap-6">
-              <button
-                onClick={() => handleExport(false)}
-                className="h-[42px] px-4 text-sm bg-green-600 hover:bg-green-700 text-white rounded-md transition-colors"
-              >
-                Exportar Filtrados
-              </button>
-              <button
-                onClick={() => handleExport(true)}
-                className="h-[42px] px-4 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
-              >
-                Exportar Todos
-              </button>
-            </div>
-
-            <div className="flex gap-4">
-              <div className="bg-red-100 px-3 py-1 rounded-md">
-                <span className="text-red-700 font-medium">
-                  Vehiculos No Desinfectados: {countVehicleDesinfection}
-                </span>
-              </div>
-              <div className="bg-green-100 px-3 py-1 rounded-md">
-                <span className="text-green-700 font-medium">
-                  Vehiculos Desinfectados: {countVehicleNoDesinfection.length}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="flex flex-col w-full mx-auto bg-white shadow-md rounded-lg overflow-hidden">
-        <div className="w-full flex flex-col sm:flex-row justify-between items-center mb-3 mt-1 pl-3">
-          <div className="flex flex-col sm:flex-row sm:space-x-4">
-            <div className="flex flex-col mb-3 sm:mb-0">
-              <label
-                htmlFor="project"
-                className="text-sm font-medium text-slate-800 text-center"
-              >
-                Tipo de Veiculo
-              </label>
-              <select
-                value={typeVehicleinput}
-                onChange={handleProjectChange}
-                id="project"
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-              >
-                <option>---Todos---</option>
-                {typeVehicle?.data?.map((item, i) => (
-                  <option value={item._id} key={i}>
-                    {item.description}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="flex flex-col mb-3 sm:mb-0">
-              <label
-                htmlFor="company"
-                className="text-sm font-medium text-slate-800 text-center"
-              >
-                Compañia
-              </label>
-              <select
-                value={companyinput}
-                onChange={handleCompanyChange}
-                id="company"
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-              >
-                <option>---Todos---</option>
-                {company?.data?.map((item) => (
-                  <option value={item._id} key={item._id}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="flex flex-col mb-3 sm:mb-0">
-              <label className="text-sm font-medium text-slate-800 text-center">
-                Estado de Desinfeccion
-              </label>
-              <select
-                value={statusDesinfectioninput}
-                onChange={handleStatusDesinfectionChange}
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-              >
-                <option>---Todos---</option>
-                {statusDesinfection?.data?.map((item) => (
-                  <option value={item._id} key={item._id}>
-                    {item.description}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="flex flex-col mb-3 sm:mb-0">
-              <label
-                htmlFor="project"
-                className="text-sm font-medium text-slate-800 text-center"
-              >
-                Tipo de Carga
-              </label>
-              <select
-                value={typeBurdeninput}
-                onChange={handleTypeBurdenChange}
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-              >
-                <option>---Todos---</option>
-                {typeBurden?.data?.map((item) => (
-                  <option value={item._id} key={item._id}>
-                    {item.description}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="flex flex-col mb-3 sm:mb-0">
-              <label
-                htmlFor="status"
-                className="text-sm font-medium text-slate-800 text-center"
-              >
-                Tipo de Comunal
-              </label>
-              <select
-                value={typeCommunalinput}
-                onChange={handleTypeCommunalChange}
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-              >
-                <option>---Todos---</option>
-                {typeCommunal?.data?.map((item) => (
-                  <option value={item._id} key={item._id}>
-                    {item.description}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="flex flex-col mb-3 sm:mb-0">
-              <label
-                htmlFor="status"
-                className="text-sm font-medium text-slate-800 text-center"
-              >
-                Tipo de insumo
-              </label>
-              <select
-                value={typeInputinput}
-                onChange={handleTypeInputChange}
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-              >
-                <option>---Todos---</option>
-                {typeInput?.data?.map((item) => (
-                  <option value={item._id} key={item._id}>
-                    {item.description}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className="w-full max-w-sm min-w-[200px] relative mt-3 sm:mt-0 sm:ml-auto">
-            <div className="relative">
-              <input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className=" w-full pr-11 h-10 pl-3 py-2 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded transition duration-200 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md"
-                placeholder="Search for..."
-              />
-              <button
-                className="absolute h-8 w-8 right-1 top-1 my-auto px-2 flex items-center bg-white rounded"
-                type="button"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="3"
-                  stroke="currentColor"
-                  className="w-8 h-8 text-slate-600"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-                  />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div className="relative flex flex-col w-full h-full overflow-scroll text-gray-700 bg-white shadow-md rounded-lg bg-clip-border">
-          <table className="w-full text-left table-auto min-w-max">
-            <thead>
-              <tr>
-                <th className="p-4 border-b border-slate-200 bg-slate-50">
+    <>
+      <div className="relative flex flex-col w-full h-full overflow-scroll text-gray-700 bg-white shadow-md rounded-lg bg-clip-border">
+        <table className="w-full text-left table-auto min-w-max">
+          <thead>
+            <tr>
+              {header.map((item, i) => (
+                <th key={i} className="p-4 border-b border-slate-200 bg-slate-50">
                   <p className="text-sm font-normal leading-none text-slate-900">
-                    Cedula
+                    {item.name}
                   </p>
                 </th>
-                <th className="p-4 border-b border-slate-200 bg-slate-50">
-                  <p className="text-sm font-normal leading-none ext-slate-900">
-                    Nombre
-                  </p>
-                </th>
-                <th className="p-4 border-b border-slate-200 bg-slate-50">
-                  <p className="text-sm font-normal leading-none ext-slate-900">
-                    Telefono
-                  </p>
-                </th>
-                <th className="p-4 border-b border-slate-200 bg-slate-50">
-                  <p className="text-sm font-normal leading-none ext-slate-900">
-                    Rol
-                  </p>
-                </th>
-                <th className="p-4 border-b border-slate-200 bg-slate-50">
-                  <p className="text-sm font-normal leading-none ext-slate-900">
-                    status
-                  </p>
-                </th>
-                <th className="p-4 border-b border-slate-200 bg-slate-50">
-                  <p className="text-sm font-normal leading-none ext-slate-900">
-                    Placa
-                  </p>
-                </th>
-                <th className="p-4 border-b border-slate-200 bg-slate-50">
-                  <p className="text-sm font-normal leading-none ext-slate-900">
-                    Tipo de Veiculo
-                  </p>
-                </th>
-                <th className="p-4 border-b border-slate-200 bg-slate-50">
-                  <p className="text-sm font-normal leading-none ext-slate-900">
-                    Compañia
-                  </p>
-                </th>
-                <th className="p-4 border-b border-slate-200 bg-slate-50">
-                  <p className="text-sm font-normal leading-none ext-slate-900">
-                    Estado de Desinfeccion
-                  </p>
-                </th>
-                <th className="p-4 border-b border-slate-200 bg-slate-50">
-                  <p className="text-sm font-normal leading-none ext-slate-900">
-                    Tipo de Carga
-                  </p>
-                </th>
-                <th className="p-4 border-b border-slate-200 bg-slate-50">
-                  <p className="text-sm font-normal leading-none ext-slate-900">
-                    Tipo de Comunal
-                  </p>
-                </th>
-                <th className="p-4 border-b border-slate-200 bg-slate-50">
-                  <p className="text-sm font-normal leading-none ext-slate-900">
-                    Tipo de insumo
-                  </p>
-                </th>
-                <th className="p-4 border-b border-slate-200 bg-slate-50">
-                  <p className="text-sm font-normal leading-none ext-slate-900">
-                    Destino Inicial
-                  </p>
-                </th>
-                <th className="p-4 border-b border-slate-200 bg-slate-50">
-                  <p className="text-sm font-normal leading-none ext-slate-900">
-                    Destino Finca
-                  </p>
-                </th>
-                <th className="p-4 border-b border-slate-200 bg-slate-50">
-                  <p className="text-sm font-normal leading-none ext-slate-900">
-                    Fecha Registro
-                  </p>
-                </th>
-                <th className="p-4 border-b border-slate-200 bg-slate-50">
-                  <p className="text-sm font-normal leading-none ext-slate-900">
-                    Acciones
-                  </p>
-                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {(currentData ?? []).length === 0  ? (
+              <tr>
+                <td colSpan="15" className="text-center p-4 text-sm text-slate-500"> No hay registros</td>
               </tr>
-            </thead>
-            <tbody>
-              {filteredData.length === 0 ? (
-                <tr>
-                  <td
-                    colSpan="15"
-                    className="text-center p-4 text-sm text-slate-500"
-                  >
-                    No hay registros
-                  </td>
-                </tr>
-              ) : (
-                filteredData.map((item, i) => (
-                  <tr
-                    key={i}
-                    className="hover:bg-slate-200 border-b border-slate-200"
-                  >
-                    <td className="p-4 py-2 ">
-                      <p className="text-sm text-slate-500">
-                        {item.person[0].dni}
-                      </p>
-                    </td>
-                    <td className="p-4 py-2">
-                      <p className="text-sm text-slate-500">
-                        {item.person[0].name}
-                      </p>
-                    </td>
-                    <td className="p-4 py-2">
-                      <p className="text-sm text-slate-500">
-                        {item.person[0].phoneNumber}
-                      </p>
-                    </td>
-                    <td className="p-4 py-2">
-                      <p className="text-sm text-slate-500">
-                        {item.person[0].role.description}
-                      </p>
-                    </td>
-                    <td className="p-4 py-2">
-                      <p className="text-sm text-slate-500">
-                        {item.person[0].status.description}
-                      </p>
-                    </td>
-                    <td className="p-4 py-2">
-                      <p className="text-sm text-slate-500">
-                        {item.vehicle[0].plate}
-                      </p>
-                    </td>
-                    <td className="p-4 py-2">
-                      <p className="text-sm text-slate-500">
-                        {item.vehicle[0].typeVehicle[0].description}
-                      </p>
-                    </td>
-                    <td className="p-4 py-2">
-                      <p className="text-sm text-slate-500">
-                        {item.vehicle[0].company[0].name}
-                      </p>
-                    </td>
-                    <td className="p-4 py-2">
-                      <p className="text-sm text-slate-500">
-                        {item.statusDesinfection[0].description}
-                      </p>
-                    </td>
-                    <td className="p-4 py-2">
-                      <p className="text-sm text-slate-500">
-                        {item.typeBurden[0].description}
-                      </p>
-                    </td>
-                    <td className="p-4 py-2">
-                      <p className="text-sm text-slate-500">
-                        {item.typeCommunal[0].description}
-                      </p>
-                    </td>
-                    <td className="p-4 py-2">
-                      <p className="text-sm text-slate-500">
-                        {item.typeInput[0].description}
-                      </p>
-                    </td>
-                    <td className="p-4 py-2">
-                      <p className="text-sm text-slate-500">
-                        {item.initialDestination}
-                      </p>
-                    </td>
-                    <td className="p-4 py-2">
-                      <p className="text-sm text-slate-500">
-                        {item.endDestination}
-                      </p>
-                    </td>
-                    <td className="p-4 py-2">
-                      <p className="text-sm text-slate-500">
-                        {fecha(item.createdAt)}
-                      </p>
-                    </td>
-                    <td className="p-4 py-2">
-                      {/* <Link to={`/home/desinfection/${item._id}`}> */}
-                      <button
-                        onClick={() => handleClickprb(item._id)}
-                        className="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-white bg-slate-800 border border-slate-800 rounded hover:bg-slate-600 hover:border-slate-600 transition duration-200 ease"
-                      >
-                        Detalle
-                      </button>
-                      {/* </Link> */}
-                    </td>
+            ) : (currentData.map((item, i) => (
+                  <tr key={i} className="hover:bg-slate-200 border-b border-slate-200">
+                    {columns.map((col, index) => (
+                      <td key={index} className="p-4 py-2 ">
+                        {col.render ? col.render(item) : <p className="text-sm text-slate-500">{item[col.accessor] || "N/A"}</p>}
+                      </td>
+                    ))}
                   </tr>
                 ))
               )}
             </tbody>
           </table>
 
-          <div className="flex justify-between  items-center px-4">
-            <div className="text-sm text-slate-500">
-              Showing <b>1-5</b> of 45
+          {/* Paginación */}
+          <div className="flex justify-between items-center px-4">
+            <div className="text-sm text-gray-500">
+              Mostrando <b>{startIndex + 1}-{Math.min(endIndex, dataList.length)}</b> de {dataList.length}
             </div>
-            <div className="flex space-x-1">
-              <button className="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-slate-500 bg-white border border-slate-200 rounded hover:bg-slate-50 hover:border-slate-400 transition duration-200 ease">
-                Prev
-              </button>
-              <button className="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-white bg-slate-800 border border-slate-800 rounded hover:bg-slate-600 hover:border-slate-600 transition duration-200 ease">
-                1
-              </button>
-              <button className="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-slate-500 bg-white border border-slate-200 rounded hover:bg-slate-50 hover:border-slate-400 transition duration-200 ease">
-                2
-              </button>
-              <button className="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-slate-500 bg-white border border-slate-200 rounded hover:bg-slate-50 hover:border-slate-400 transition duration-200 ease">
-                3
-              </button>
-              <button className="px-3 py-1 min-w-9 min-h-9 text-sm font-normal text-slate-500 bg-white border border-slate-200 rounded hover:bg-slate-50 hover:border-slate-400 transition duration-200 ease">
-                Next
-              </button>
+            <div className="flex space-x-2">
+                {/* Botón Anterior */}
+                <button className={`px-3 py-1 border rounded ${currentPage === 1 ? "bg-gray-200 text-gray-400 cursor-not-allowed" : "bg-white hover:bg-gray-100"}`} onClick={() => goToPage(currentPage - 1)} disabled={currentPage === 1}>
+                  Prev
+                </button>
+
+                {/* Botones de página */}
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <button key={page} className={`px-3 py-1 border rounded ${currentPage === page ? "bg-blue-500 text-white" : "bg-white hover:bg-gray-100"}`}onClick={() => goToPage(page)}>
+                    {page}
+                  </button>
+                ))}
+
+                {/* Botón Siguiente */}
+                <button className={`px-3 py-1 border rounded ${currentPage === totalPages ? "bg-gray-200 text-gray-400 cursor-not-allowed" : "bg-white hover:bg-gray-100"}`} onClick={() => goToPage(currentPage + 1)}disabled={currentPage === totalPages}>
+                  Next
+                </button>
             </div>
           </div>
-        </div>
       </div>
-    </div>
+    </>
   );
 }
 
 export default TableComponent;
+
+
+{/* <td className="p-4 py-2 ">
+  <p className="text-sm text-slate-500">
+    {item.person[0].dni}
+  </p>
+</td>
+
+<td className="p-4 py-2 ">
+  <p className="text-sm text-slate-500">
+    {item.person[0].name}
+  </p>
+</td>  
+
+<td className="p-4 py-2 ">
+  <p className="text-sm text-slate-500">
+    {item.person[0].phoneNumber}
+  </p>
+</td>
+
+<td className="p-4 py-2 ">
+  <p className="text-sm text-slate-500">
+    {item.person[0].role.description}
+  </p>
+</td> */}
