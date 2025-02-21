@@ -37,8 +37,8 @@ const List = () => {
 
   const chartData = processDataForChart(
     dataType,
-    registerVehicle,
-    waterConsumption,
+    registerVehicle || [],
+    waterConsumption || [],
     startDate,
     endDate,
     communalFilter,

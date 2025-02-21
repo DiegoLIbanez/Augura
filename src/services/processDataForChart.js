@@ -13,8 +13,9 @@ export const processDataForChart = (
     let totalDesinfected = 0;
     let totalNotDesinfected = 0;
 
-    if (registerVehicle?.data && Array.isArray(registerVehicle.data)) {
-      registerVehicle?.data?.forEach((item) => {
+    if (registerVehicle && Array.isArray(registerVehicle)) {
+      registerVehicle?.forEach((item) => {
+        console.log(item);
         const itemDate = new Date(item.createdAt);
         const date = itemDate.toLocaleDateString();
 
@@ -80,8 +81,8 @@ export const processDataForChart = (
     let totalWaterConsumption = 0;
     let totalDisinfectantConsumption = 0;
 
-    if (waterConsumption?.data && Array.isArray(waterConsumption.data)) {
-      waterConsumption?.data?.forEach((item) => {
+    if (waterConsumption && Array.isArray(waterConsumption)) {
+      waterConsumption?.forEach((item) => {
         const itemDate = new Date(item.dateNow);
         const date = itemDate.toLocaleDateString();
 
