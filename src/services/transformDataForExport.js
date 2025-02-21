@@ -5,6 +5,11 @@ export const transformDataForExport = (data, fecha) => {
     Teléfono: item.person?.[0]?.phoneNumber || "",
     Rol: item.person?.[0]?.role?.description || "",
     Estado: item.person?.[0]?.status?.description || "",
+    "Nombre Completo del Conducto":
+      item.driver[0].name + " " + item.driver[0].lastname || "",
+    "Cédula del Conductor": item.driver[0].dni || "",
+    "Correo del Conductor": item.driver[0].email || "",
+    "Teléfono del Conductor": item.driver[0].phoneNumber || "",
     Placa: item.vehicle?.[0]?.plate || "",
     "Tipo de Vehículo": item.vehicle?.[0]?.typeVehicle?.[0]?.description || "",
     Compañía: item.vehicle?.[0]?.company?.[0]?.name || "",

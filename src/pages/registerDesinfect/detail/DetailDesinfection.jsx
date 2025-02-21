@@ -5,22 +5,24 @@ import { useParams } from "react-router-dom";
 import { fecha } from "../../../services/formatDate";
 
 const DetailDesinfection = ({ setView }) => {
-  const dispatch = useDispatch();
   const registerVehicleId = useSelector(
-    (state) => state.registerVehicle.registerVehicleId.data
+    (state) => state.registerVehicle?.registerVehicleId
   );
-  console.log(registerVehicleId);
+  console.log(
+    registerVehicleId?.driver[0]?.name +
+      " " +
+      registerVehicleId?.driver[0]?.lastname
+  );
   if (!registerVehicleId || registerVehicleId.length === 0) {
     return <div>Cargando...</div>;
   }
 
-  const vehicle = registerVehicleId[0]?.vehicle?.[0] || {};
-  const person = registerVehicleId[0]?.person?.[0] || {};
-  const statusDesinfection =
-    registerVehicleId[0]?.statusDesinfection?.[0] || {};
-  const typeBurden = registerVehicleId[0]?.typeBurden?.[0] || {};
-  const typeCommunal = registerVehicleId[0]?.typeCommunal?.[0] || {};
-  const typeInput = registerVehicleId[0]?.typeInput?.[0] || {};
+  const vehicle = registerVehicleId.vehicle?.[0] || {};
+  const driver = registerVehicleId.driver?.[0] || {};
+  const statusDesinfection = registerVehicleId.statusDesinfection?.[0] || {};
+  const typeBurden = registerVehicleId.typeBurden?.[0] || {};
+  const typeCommunal = registerVehicleId.typeCommunal?.[0] || {};
+  const typeInput = registerVehicleId.typeInput?.[0] || {};
 
   const handleReturn = () => {
     setView({ list: true });
@@ -45,13 +47,16 @@ const DetailDesinfection = ({ setView }) => {
           </h1>
 
           <div className="grid grid-cols-2 gap-4">
-            <InfoItem label="Cédula" value={person.dni} />
-            <InfoItem label="Nombre" value={person.name} />
-            <InfoItem label="Teléfono" value={person.phoneNumber} />
+            <InfoItem label="Cédula" value={driver.dni} />
+            <InfoItem
+              label="Nombre del Coductor"
+              value={`${driver.name} ${driver.lastname}`}
+            />
+            <InfoItem label="Teléfono" value={driver.phoneNumber} />
 
             <InfoItem
               label="Fecha de Registro"
-              value={fecha(registerVehicleId[0]?.createdAt)}
+              value={fecha(registerVehicleId.createdAt)}
             />
             <InfoItem label="Placa" value={vehicle.plate} />
             <InfoItem
@@ -69,11 +74,11 @@ const DetailDesinfection = ({ setView }) => {
             <InfoItem label="Tipo Insumo" value={typeInput.description} />
             <InfoItem
               label="Destino Inicial"
-              value={registerVehicleId[0]?.initialDestination}
+              value={registerVehicleId.initialDestination}
             />
             <InfoItem
               label="Destino Finca"
-              value={registerVehicleId[0]?.endDestination}
+              value={registerVehicleId.endDestination}
             />
           </div>
         </div>

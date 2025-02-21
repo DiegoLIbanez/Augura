@@ -35,8 +35,7 @@ const List = () => {
       header: "Consumo de agua",
       render: (item) => item?.waterConsumption || "N/A",
     },
-    { 
-
+    {
       header: "Consumo de desinfectante",
       render: (item) => item?.disinfectantConsumption || "N/A",
     },
@@ -86,7 +85,11 @@ const List = () => {
             </button>
           </div>
           <div className="flex-grow flex justify-center">
-          <TableComponent setView={setView} dataList={dataList} {...tableProps} />
+            <TableComponent
+              setView={setView}
+              dataList={dataList}
+              {...tableProps}
+            />
           </div>
         </>
       ) : view.create === true ? (

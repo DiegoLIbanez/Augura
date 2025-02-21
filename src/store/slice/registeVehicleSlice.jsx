@@ -1,24 +1,34 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getService, getServiceById,createService } from "../services/registeVehicleService";
+import {
+  getService,
+  getServiceById,
+  createService,
+} from "../services/registeVehicleService";
 
 // Obtener usuarios (asyncThunk)
-export const fetchregisterVehicleSlice = createAsyncThunk("registerVehicle/fetregisterVehicle",async () => {
+export const fetchregisterVehicleSlice = createAsyncThunk(
+  "registerVehicle/fetregisterVehicle",
+  async () => {
     return await getService();
-  });
+  }
+);
 
 // obtener el registerVehicle por id
-export const fetchregisterVehicleByIdSlice = createAsyncThunk("registerVehicle/fetregisterVehicleById",async (id) => {
+export const fetchregisterVehicleByIdSlice = createAsyncThunk(
+  "registerVehicle/fetregisterVehicleById",
+  async (id) => {
     return await getServiceById(id);
-  });
+  }
+);
 
 export const createRegisterVehicleSlice = async (body) => {
   return await createService(body);
-}
+};
 
 const initialState = {
-  statusCode:0,
+  statusCode: 0,
   data: [],
-  registerVehicleId: {},
+  registerVehicleObj: {},
   loading: false,
   error: null,
 };
@@ -26,9 +36,13 @@ const initialState = {
 export const registerVehicleSlice = createSlice({
   name: "registerVehicle",
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    // agregar registro pi id
+    addRegisterVehicleId: (state, action) => {
+      state.registerVehicleObj = action.payload;
+    },
+  },
   extraReducers: (builder) => {
-
     builder.addCase(fetchregisterVehicleSlice.pending, (state) => {
       state.loading = true;
     });
@@ -57,8 +71,9 @@ export const registerVehicleSlice = createSlice({
       state.loading = false;
       state.error = action.error;
     });
-
   },
 });
+
+export const { addRegisterVehicleId } = registerVehicleSlice.actions;
 
 export default registerVehicleSlice.reducer;

@@ -18,17 +18,24 @@ import { fecha } from "../../../services/formatDate";
 
 //Views
 // import Create from "../create/Create";
-// import DetailDesinfection from "../detail/DetailDesinfection";
+import DetailDesinfection from "../detail/DetailDesinfection";
 
 //Slices
 import { fetchtypeVehicle } from "../../../store/slice/typeVehicleSlice";
 import { fetchCompany } from "../../../store/slice/companySlice";
-import { fetchregisterVehicleSlice, fetchregisterVehicleByIdSlice } from "../../../store/slice/registeVehicleSlice";
+import {
+  fetchregisterVehicleSlice,
+  addRegisterVehicleId,
+} from "../../../store/slice/registeVehicleSlice";
 import { fetchstatusDesinfection } from "../../../store/slice/statusDesinfectionSlice";
 import { fetchTypeBurden } from "../../../store/slice/typeBurdenSlice";
-import { fetchtypeCommunal } from "../../../store/slice/typeCommunalSlice";
+import reducer, {
+  fetchtypeCommunal,
+} from "../../../store/slice/typeCommunalSlice";
 import { fetchtypeInput } from "../../../store/slice/typeInputSlice";
 import { vehicleFilter } from "../../../services/vehicleFilter";
+import FilterDate from "../../../components/FilterDate/FilterDate";
+import { SummaryBox } from "../../../components/SummaryBox/SummaryBox";
 
 function List() {
   // Redux setup
@@ -45,7 +52,8 @@ function List() {
   const [search, setSearch] = useState("");
   const [typeVehicleinput, settypeVehicleinput] = useState("---Todos---");
   const [companyinput, setcompanyinput] = useState("---Todos---");
-  const [statusDesinfectioninput, setstatusDesinfectioninput] = useState("---Todos---");
+  const [statusDesinfectioninput, setstatusDesinfectioninput] =
+    useState("---Todos---");
   const [typeBurdeninput, settypeBurdeninput] = useState("---Todos---");
   const [typeCommunalinput, settypeCommunalinput] = useState("---Todos---");
   const [typeInputinput, settypeInputinput] = useState("---Todos---");
@@ -57,7 +65,9 @@ function List() {
   const dataList = useSelector((state) => state.registerVehicle?.data ?? []);
   const typeVehicle = useSelector((state) => state.typeVehicle.data);
   const company = useSelector((state) => state.company.data);
-  const statusDesinfection = useSelector((state) => state.statusDesinfection.data);
+  const statusDesinfection = useSelector(
+    (state) => state.statusDesinfection.data
+  );
   const typeBurden = useSelector((state) => state.typeBurden.data);
   const typeCommunal = useSelector((state) => state.typeCommunal.data);
   const typeInput = useSelector((state) => state.typeInput.data);
@@ -68,6 +78,10 @@ function List() {
     { name: "Teléfono" },
     { name: "Rol" },
     { name: "Estatus" },
+    { name: "Nombre del Conductor" },
+    { name: "Cedula Conductor" },
+    { name: "Correo Conductor" },
+    { name: "Telefono Conductor" },
     { name: "Placa" },
     { name: "Tipo de Vehiculo" },
     { name: "Compañia" },
@@ -95,6 +109,23 @@ function List() {
     {
       header: "Status",
       render: (item) => item?.person[0].status.description || "N/A",
+    },
+    {
+      header: "Nombre Completo del Conductor",
+      render: (item) =>
+        item.driver[0].name + " " + item.driver[0].lastname || "N/A",
+    },
+    {
+      header: "Cedula del Conductor",
+      render: (item) => item.driver[0].dni || "N/A",
+    },
+    {
+      header: "Correo del Conductor",
+      render: (item) => item.driver[0].email || "N/A",
+    },
+    {
+      header: "Telefono del Conductor",
+      render: (item) => item.driver[0].phoneNumber || "N/A",
     },
     { header: "Placa", render: (item) => item?.vehicle[0].plate || "N/A" },
     {
@@ -140,7 +171,10 @@ function List() {
           <button className="px-2 py-1 bg-yellow-500 text-white rounded">
             Editar
           </button>
-          <button className="px-2 py-1 bg-blue-500 text-white rounded">
+          <button
+            onClick={() => handleClickdetail(item)}
+            className="px-2 py-1 bg-blue-500 text-white rounded"
+          >
             Detalle
           </button>
         </div>
@@ -148,18 +182,13 @@ function List() {
     },
   ];
 
-  {
-    /* <button onClick={() => handleEdit(item)} className="px-2 py-1 bg-yellow-500 text-white rounded">
-      Editar
-    </button>
-    <button onClick={() => handleDetail(item)} className="px-2 py-1 bg-blue-500 text-white rounded">
-      Detalle
-    </button> */
-  }
-
   //dispatch
-  const countVehicleDesinfection = filteredData.filter((data) => data.statusDesinfection[0].description === "NO");
-  const countVehicleNoDesinfection = filteredData.filter((data) => data.statusDesinfection[0].description === "SI");
+  const countVehicleDesinfection = filteredData.filter(
+    (data) => data.statusDesinfection[0].description === "SI"
+  ).length;
+  const countVehicleNoDesinfection = filteredData.filter(
+    (data) => data.statusDesinfection[0].description === ""
+  ).length;
 
   const tableProps = {
     header,
@@ -201,19 +230,21 @@ function List() {
     typeInputinput,
     search,
     startDate,
-    endDate
+    endDate,
   ]);
 
   // Manejo de los cambios en los filtros
   const handleProjectChange = (e) => settypeVehicleinput(e.target.value);
   const handleCompanyChange = (e) => setcompanyinput(e.target.value);
-  const handleStatusDesinfectionChange = (e) => setstatusDesinfectioninput(e.target.value);
+  const handleStatusDesinfectionChange = (e) =>
+    setstatusDesinfectioninput(e.target.value);
   const handleTypeBurdenChange = (e) => settypeBurdeninput(e.target.value);
   const handleTypeCommunalChange = (e) => settypeCommunalinput(e.target.value);
   const handleTypeInputChange = (e) => settypeInputinput(e.target.value);
 
   // // Funcion para exportar
   const handleExport = (exportAll = false) => {
+    console.log(filteredData);
     const sourceData = exportAll ? dataList || [] : filteredData;
     if (!sourceData || sourceData.length === 0) {
       Swal.fire({
@@ -243,61 +274,22 @@ function List() {
     }
   };
 
-  const handleIdChange = (e) => {
-    dispatch(fetchregisterVehicleByIdSlice(e));
-  };
-
-  const handleClickprb = (id) => {
+  const handleClickdetail = (item) => {
     setView({ detail: true });
-    dispatch(fetchregisterVehicleByIdSlice(id));
+    dispatch(addRegisterVehicleId(item));
   };
-
-  // useEffect(() => {
-  //   console.log(dataList);
-  // }, [dataList])
 
   return (
     <>
       {view.list === true ? (
         <>
           <div className="flex flex-col w-full mx-auto gap-9 bg-white shadow-md rounded-lg overflow-hidden">
-            <div className="flex flex-col md:flex-row lg:w-1/2 md:w-full gap-6 p-4">
-              <div className="flex flex-col flex-1">
-                <label className="text-sm font-medium text-slate-800">
-                  Fecha Inicial
-                </label>
-                <input
-                  type="date"
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
-                  className="mt-1 p-2 border rounded-md focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
-
-              <div className="flex flex-col flex-1">
-                <label className="text-sm font-medium text-slate-800">
-                  Fecha Final
-                </label>
-                <input
-                  type="date"
-                  value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
-                  className="mt-1 p-2 border rounded-md focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
-
-              <div className="flex flex-col justify-end">
-                <button
-                  onClick={() => {
-                    setStartDate("");
-                    setEndDate("");
-                  }}
-                  className="h-[42px] px-4 text-sm bg-gray-200 hover:bg-gray-300 rounded-md transition-colors"
-                >
-                  Limpiar fechas
-                </button>
-              </div>
-            </div>
+            <FilterDate
+              setStartDate={setStartDate}
+              endDate={endDate}
+              setEndDate={setEndDate}
+              startDate={startDate}
+            />
 
             <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4">
               <div className="flex gap-6">
@@ -315,18 +307,21 @@ function List() {
                 </button>
               </div>
 
-              <div className="flex gap-4">
-                <div className="bg-red-100 px-3 py-1 rounded-md">
-                  <span className="text-red-700 font-medium">
-                    Vehiculos No Desinfectados:{" "}
-                    {countVehicleDesinfection.length}
-                  </span>
-                </div>
-                <div className="bg-green-100 px-3 py-1 rounded-md">
-                  <span className="text-green-700 font-medium">
-                    Vehiculos Desinfectados: {countVehicleNoDesinfection.length}
-                  </span>
-                </div>
+              <div className="w-full md:w-auto flex flex-col md:flex-row gap-4">
+                <>
+                  <SummaryBox
+                    label="Vehículos No Desinfectados"
+                    value={countVehicleNoDesinfection}
+                    bgColor="bg-red-100"
+                    textColor="text-red-700"
+                  />
+                  <SummaryBox
+                    label="Vehículos Desinfectados"
+                    value={countVehicleDesinfection}
+                    bgColor="bg-green-100"
+                    textColor="text-green-700"
+                  />
+                </>
               </div>
             </div>
 
@@ -486,7 +481,11 @@ function List() {
               </div>
             </div>
 
-            <TableComponent setView={setView} dataList={filteredData} {...tableProps} />
+            <TableComponent
+              setView={setView}
+              dataList={filteredData}
+              {...tableProps}
+            />
           </div>
         </>
       ) : view.create === true ? (

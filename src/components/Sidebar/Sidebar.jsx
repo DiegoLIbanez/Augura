@@ -30,7 +30,6 @@ function Sidebar({ isOpen }) {
           icon: <HiOutlineDocumentReport />,
           function: () => setViews({ waterConsumption: true }),
         },
-        { name: "Usuarios", icon: <FaUserCircle />, path: "/users" },
         {
           name: "Reportes",
           icon: <HiDocumentReport />,
