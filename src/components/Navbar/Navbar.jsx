@@ -94,7 +94,7 @@ function Navbar() {
                 {/* Menú desplegable en posición original */}
                 <div
                   ref={dropdownRef}
-                  className={`z-50 absolute right-0 mt-60 ${
+                  className={`z-50 absolute right-0 mt-40 ${
                     isProfileDropdownOpen ? "block" : "hidden"
                   } w-48 bg-white rounded-lg shadow-xl dark:bg-gray-700 border border-gray-200 dark:border-gray-600`}
                 >
@@ -107,7 +107,7 @@ function Navbar() {
                     </p>
                   </div>
                   <ul className="py-1">
-                    <li>
+                    {/* <li>
                       <a
                         href="#"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
@@ -130,13 +130,11 @@ function Navbar() {
                       >
                         Earnings
                       </a>
-                    </li>
+                    </li> */}
                     <li>
                       <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                      >
-                        Sign out
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">
+                        Cerrar sesión
                       </a>
                     </li>
                   </ul>

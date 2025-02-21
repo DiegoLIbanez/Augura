@@ -61,7 +61,6 @@ const List = () => {
   ];
 
   const tableProps = {
-    dataList,
     header,
     columns,
   };
@@ -87,7 +86,7 @@ const List = () => {
             </button>
           </div>
           <div className="flex-grow flex justify-center">
-            <TableComponent setView={setView} {...tableProps} />
+          <TableComponent setView={setView} dataList={dataList} {...tableProps} />
           </div>
         </>
       ) : view.create === true ? (

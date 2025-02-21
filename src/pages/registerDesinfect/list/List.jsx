@@ -23,15 +23,12 @@ import { fecha } from "../../../services/formatDate";
 //Slices
 import { fetchtypeVehicle } from "../../../store/slice/typeVehicleSlice";
 import { fetchCompany } from "../../../store/slice/companySlice";
-import {
-  fetchregisterVehicleSlice,
-  fetchregisterVehicleByIdSlice,
-} from "../../../store/slice/registeVehicleSlice";
+import { fetchregisterVehicleSlice, fetchregisterVehicleByIdSlice } from "../../../store/slice/registeVehicleSlice";
 import { fetchstatusDesinfection } from "../../../store/slice/statusDesinfectionSlice";
 import { fetchTypeBurden } from "../../../store/slice/typeBurdenSlice";
 import { fetchtypeCommunal } from "../../../store/slice/typeCommunalSlice";
 import { fetchtypeInput } from "../../../store/slice/typeInputSlice";
-// import { vehicleFilter } from "../../../services/";
+import { vehicleFilter } from "../../../services/vehicleFilter";
 
 function List() {
   // Redux setup
@@ -48,8 +45,7 @@ function List() {
   const [search, setSearch] = useState("");
   const [typeVehicleinput, settypeVehicleinput] = useState("---Todos---");
   const [companyinput, setcompanyinput] = useState("---Todos---");
-  const [statusDesinfectioninput, setstatusDesinfectioninput] =
-    useState("---Todos---");
+  const [statusDesinfectioninput, setstatusDesinfectioninput] = useState("---Todos---");
   const [typeBurdeninput, settypeBurdeninput] = useState("---Todos---");
   const [typeCommunalinput, settypeCommunalinput] = useState("---Todos---");
   const [typeInputinput, settypeInputinput] = useState("---Todos---");
@@ -61,9 +57,7 @@ function List() {
   const dataList = useSelector((state) => state.registerVehicle?.data ?? []);
   const typeVehicle = useSelector((state) => state.typeVehicle.data);
   const company = useSelector((state) => state.company.data);
-  const statusDesinfection = useSelector(
-    (state) => state.statusDesinfection.data
-  );
+  const statusDesinfection = useSelector((state) => state.statusDesinfection.data);
   const typeBurden = useSelector((state) => state.typeBurden.data);
   const typeCommunal = useSelector((state) => state.typeCommunal.data);
   const typeInput = useSelector((state) => state.typeInput.data);
@@ -164,15 +158,10 @@ function List() {
   }
 
   //dispatch
-  const countVehicleDesinfection = filteredData.filter(
-    (data) => data.statusDesinfection[0].description === "NO"
-  );
-  const countVehicleNoDesinfection = filteredData.filter(
-    (data) => data.statusDesinfection[0].description === "SI"
-  );
+  const countVehicleDesinfection = filteredData.filter((data) => data.statusDesinfection[0].description === "NO");
+  const countVehicleNoDesinfection = filteredData.filter((data) => data.statusDesinfection[0].description === "SI");
 
   const tableProps = {
-    dataList,
     header,
     columns,
   };
@@ -188,38 +177,37 @@ function List() {
     dispatch(fetchtypeInput());
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   const filtered = vehicleFilter(
-  //     dataList,
-  //     typeVehicleinput,
-  //     companyinput,
-  //     statusDesinfectioninput,
-  //     typeBurdeninput,
-  //     typeCommunalinput,
-  //     typeInputinput,
-  //     search,
-  //     startDate,
-  //     endDate
-  //   );
-  //   setFilteredData(filtered);
-  // }, [
-  //   dataList,
-  //   typeVehicleinput,
-  //   companyinput,
-  //   statusDesinfectioninput,
-  //   typeBurdeninput,
-  //   typeCommunalinput,
-  //   typeInputinput,
-  //   search,
-  //   startDate,
-  //   endDate
-  // ]);
+  useEffect(() => {
+    const filtered = vehicleFilter(
+      dataList,
+      typeVehicleinput,
+      companyinput,
+      statusDesinfectioninput,
+      typeBurdeninput,
+      typeCommunalinput,
+      typeInputinput,
+      search,
+      startDate,
+      endDate
+    );
+    setFilteredData(filtered);
+  }, [
+    dataList,
+    typeVehicleinput,
+    companyinput,
+    statusDesinfectioninput,
+    typeBurdeninput,
+    typeCommunalinput,
+    typeInputinput,
+    search,
+    startDate,
+    endDate
+  ]);
 
   // Manejo de los cambios en los filtros
   const handleProjectChange = (e) => settypeVehicleinput(e.target.value);
   const handleCompanyChange = (e) => setcompanyinput(e.target.value);
-  const handleStatusDesinfectionChange = (e) =>
-    setstatusDesinfectioninput(e.target.value);
+  const handleStatusDesinfectionChange = (e) => setstatusDesinfectioninput(e.target.value);
   const handleTypeBurdenChange = (e) => settypeBurdeninput(e.target.value);
   const handleTypeCommunalChange = (e) => settypeCommunalinput(e.target.value);
   const handleTypeInputChange = (e) => settypeInputinput(e.target.value);
@@ -498,7 +486,7 @@ function List() {
               </div>
             </div>
 
-            <TableComponent setView={setView} {...tableProps} />
+            <TableComponent setView={setView} dataList={filteredData} {...tableProps} />
           </div>
         </>
       ) : view.create === true ? (
