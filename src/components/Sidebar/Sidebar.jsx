@@ -43,6 +43,10 @@ function Sidebar({ isOpen }) {
           name: "Registrar desinfeccion",
           function: () => setViews({ registerDisinfect: true }),
         },
+        {
+          name: "Consumo de agua",
+          function: () => setViews({ CreatewaterConsumption: true }),
+        },
       ]);
     }
   }, []);

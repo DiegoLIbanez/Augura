@@ -5,10 +5,15 @@ import Swal from "sweetalert2";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
+
+//Slices
 import { fetchtypeCommunal } from "../../../store/slice/typeCommunalSlice";
 import { createWaterConsumption } from "../../../store/slice/waterConsumtionSlice";
 
 const ConsumptionForm = ({ setView }) => {
+
+  //Get info redux
+  const infoRole = useSelector((store) => store.auth.data.role);
 
   const dispatch = useDispatch();
 
@@ -71,14 +76,19 @@ const ConsumptionForm = ({ setView }) => {
 
   return (
     <>
-      <div className="container mx-auto p-4">
-        <button
-          className=" cursor-pointer transition-all bg-blue-500 text-white px-6 py-2 rounded-lg border-blue-600 border-b-[4px] hover:brightness-110 hover:-translate-y-[1px]"
-          onClick={handleBack}
-        >
-          Volver
-        </button>
-      </div>
+
+      {
+        infoRole === 'Administrador' ? 
+          <>
+            <div className="container mx-auto p-4">
+              <button className=" cursor-pointer transition-all bg-blue-500 text-white px-6 py-2 rounded-lg border-blue-600 border-b-[4px] hover:brightness-110 hover:-translate-y-[1px]" onClick={handleBack}>
+                Volver
+              </button>
+            </div>
+          </> : 
+        <></>
+      }
+
       <div className="min-h-screen bg-gray-100 py-8 px-4">
         <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
           <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">

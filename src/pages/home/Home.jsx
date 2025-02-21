@@ -3,6 +3,7 @@ import React, { useContext } from "react";
 //Pages
 import ListDisinfect from "../registerDesinfect/list/List";
 import RegisterDisinfect from "../registerDesinfect/create/Create";
+import RegisterWaterConsumption from "../waterConsumption/create/Create";
 import ListWaterConsumption from "../waterConsumption/list/List";
 import GraphList from "../graph/Graph";
 
@@ -27,6 +28,8 @@ function Home() {
             <RegisterDisinfect />
           ) : views.waterConsumption === true ? (
             <ListWaterConsumption />
+          ) : views.CreatewaterConsumption === true ? (
+            <RegisterWaterConsumption />
           ) : views.graph === true ? (
             <GraphList />
           ) : (
