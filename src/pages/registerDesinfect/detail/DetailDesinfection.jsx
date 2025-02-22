@@ -4,25 +4,14 @@ import { fetchregisterVehicleByIdSlice } from "../../../store/slice/registeVehic
 import { useParams } from "react-router-dom";
 import { fecha } from "../../../services/formatDate";
 
-const DetailDesinfection = ({ setView }) => {
-  const registerVehicleId = useSelector(
-    (state) => state.registerVehicle?.registerVehicleId
-  );
-  console.log(
-    registerVehicleId?.driver[0]?.name +
-      " " +
-      registerVehicleId?.driver[0]?.lastname
-  );
-  if (!registerVehicleId || registerVehicleId.length === 0) {
-    return <div>Cargando...</div>;
-  }
+const DetailDesinfection = ({ setView, detailVehicle }) => {
 
-  const vehicle = registerVehicleId.vehicle?.[0] || {};
-  const driver = registerVehicleId.driver?.[0] || {};
-  const statusDesinfection = registerVehicleId.statusDesinfection?.[0] || {};
-  const typeBurden = registerVehicleId.typeBurden?.[0] || {};
-  const typeCommunal = registerVehicleId.typeCommunal?.[0] || {};
-  const typeInput = registerVehicleId.typeInput?.[0] || {};
+  const vehicle = detailVehicle.vehicle[0] || {};
+  const driver = detailVehicle.driver[0] || {};
+  const statusDesinfection = detailVehicle.statusDesinfection[0] || {};
+  const typeBurden = detailVehicle.typeBurden[0] || {};
+  const typeCommunal = detailVehicle.typeCommunal[0] || {};
+  const typeInput = detailVehicle.typeInput[0] || {};
 
   const handleReturn = () => {
     setView({ list: true });
@@ -56,7 +45,7 @@ const DetailDesinfection = ({ setView }) => {
 
             <InfoItem
               label="Fecha de Registro"
-              value={fecha(registerVehicleId.createdAt)}
+              value={fecha(detailVehicle.createdAt)}
             />
             <InfoItem label="Placa" value={vehicle.plate} />
             <InfoItem
@@ -74,11 +63,11 @@ const DetailDesinfection = ({ setView }) => {
             <InfoItem label="Tipo Insumo" value={typeInput.description} />
             <InfoItem
               label="Destino Inicial"
-              value={registerVehicleId.initialDestination}
+              value={detailVehicle.initialDestination}
             />
             <InfoItem
               label="Destino Finca"
-              value={registerVehicleId.endDestination}
+              value={detailVehicle.endDestination}
             />
           </div>
         </div>

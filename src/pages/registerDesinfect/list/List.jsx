@@ -52,14 +52,15 @@ function List() {
   const [search, setSearch] = useState("");
   const [typeVehicleinput, settypeVehicleinput] = useState("---Todos---");
   const [companyinput, setcompanyinput] = useState("---Todos---");
-  const [statusDesinfectioninput, setstatusDesinfectioninput] =
-    useState("---Todos---");
+  const [statusDesinfectioninput, setstatusDesinfectioninput] =useState("---Todos---");
   const [typeBurdeninput, settypeBurdeninput] = useState("---Todos---");
   const [typeCommunalinput, settypeCommunalinput] = useState("---Todos---");
   const [typeInputinput, settypeInputinput] = useState("---Todos---");
   const [filteredData, setFilteredData] = useState([]);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [detailVehicle, setDetailVehicle] = useState({});
+
 
   //Cargar la data
   const dataList = useSelector((state) => state.registerVehicle?.data ?? []);
@@ -275,8 +276,8 @@ function List() {
   };
 
   const handleClickdetail = (item) => {
+    setDetailVehicle(item);
     setView({ detail: true });
-    dispatch(addRegisterVehicleId(item));
   };
 
   return (
@@ -491,7 +492,7 @@ function List() {
       ) : view.create === true ? (
         <Create setView={setView} />
       ) : view.detail === true ? (
-        <DetailDesinfection setView={setView} />
+        <DetailDesinfection detailVehicle={detailVehicle} setView={setView} />
       ) : (
         <></>
       )}
