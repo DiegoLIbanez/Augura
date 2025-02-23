@@ -17,21 +17,15 @@ import { fecha } from "../../../services/formatDate";
 // import Swal from "sweetalert2";
 
 //Views
-// import Create from "../create/Create";
 import DetailDesinfection from "../detail/DetailDesinfection";
 
 //Slices
 import { fetchtypeVehicle } from "../../../store/slice/typeVehicleSlice";
 import { fetchCompany } from "../../../store/slice/companySlice";
-import {
-  fetchregisterVehicleSlice,
-  addRegisterVehicleId,
-} from "../../../store/slice/registeVehicleSlice";
+import { fetchregisterVehicleSlice} from "../../../store/slice/registeVehicleSlice";
 import { fetchstatusDesinfection } from "../../../store/slice/statusDesinfectionSlice";
 import { fetchTypeBurden } from "../../../store/slice/typeBurdenSlice";
-import reducer, {
-  fetchtypeCommunal,
-} from "../../../store/slice/typeCommunalSlice";
+import { fetchtypeCommunal,} from "../../../store/slice/typeCommunalSlice";
 import { fetchtypeInput } from "../../../store/slice/typeInputSlice";
 import { vehicleFilter } from "../../../services/vehicleFilter";
 import FilterDate from "../../../components/FilterDate/FilterDate";
@@ -43,8 +37,6 @@ function List() {
 
   const [view, setView] = useState({
     list: true,
-    create: false,
-    update: false,
     detail: false,
   });
 
@@ -61,14 +53,11 @@ function List() {
   const [endDate, setEndDate] = useState("");
   const [detailVehicle, setDetailVehicle] = useState({});
 
-
   //Cargar la data
   const dataList = useSelector((state) => state.registerVehicle?.data ?? []);
   const typeVehicle = useSelector((state) => state.typeVehicle.data);
   const company = useSelector((state) => state.company.data);
-  const statusDesinfection = useSelector(
-    (state) => state.statusDesinfection.data
-  );
+  const statusDesinfection = useSelector((state) => state.statusDesinfection.data);
   const typeBurden = useSelector((state) => state.typeBurden.data);
   const typeCommunal = useSelector((state) => state.typeCommunal.data);
   const typeInput = useSelector((state) => state.typeInput.data);
@@ -184,12 +173,8 @@ function List() {
   ];
 
   //dispatch
-  const countVehicleDesinfection = filteredData.filter(
-    (data) => data.statusDesinfection[0].description === "SI"
-  ).length;
-  const countVehicleNoDesinfection = filteredData.filter(
-    (data) => data.statusDesinfection[0].description === ""
-  ).length;
+  const countVehicleDesinfection = filteredData.filter((data) => data.statusDesinfection[0].description === "SI").length;
+  const countVehicleNoDesinfection = filteredData.filter((data) => data.statusDesinfection[0].description === "").length;
 
   const tableProps = {
     header,
@@ -237,8 +222,7 @@ function List() {
   // Manejo de los cambios en los filtros
   const handleProjectChange = (e) => settypeVehicleinput(e.target.value);
   const handleCompanyChange = (e) => setcompanyinput(e.target.value);
-  const handleStatusDesinfectionChange = (e) =>
-    setstatusDesinfectioninput(e.target.value);
+  const handleStatusDesinfectionChange = (e) => setstatusDesinfectioninput(e.target.value);
   const handleTypeBurdenChange = (e) => settypeBurdeninput(e.target.value);
   const handleTypeCommunalChange = (e) => settypeCommunalinput(e.target.value);
   const handleTypeInputChange = (e) => settypeInputinput(e.target.value);
@@ -277,225 +261,210 @@ function List() {
 
   const handleClickdetail = (item) => {
     setDetailVehicle(item);
-    setView({ detail: true });
+    setView({ detail:true })
   };
 
   return (
     <>
-      {view.list === true ? (
-        <>
-          <div className="flex flex-col w-full mx-auto gap-9 bg-white shadow-md rounded-lg overflow-hidden">
-            <FilterDate
-              setStartDate={setStartDate}
-              endDate={endDate}
-              setEndDate={setEndDate}
-              startDate={startDate}
-            />
+      { view.list && <div className="flex flex-col w-full mx-auto gap-9 bg-white shadow-md rounded-lg overflow-hidden">
+        <FilterDate setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} startDate={startDate} />
 
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4">
-              <div className="flex gap-6">
-                <button
-                  onClick={() => handleExport(false)}
-                  className="h-[42px] px-4 text-sm bg-green-600 hover:bg-green-700 text-white rounded-md transition-colors"
-                >
-                  Exportar Filtrados
-                </button>
-                <button
-                  onClick={() => handleExport(true)}
-                  className="h-[42px] px-4 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
-                >
-                  Exportar Todos
-                </button>
-              </div>
-
-              <div className="w-full md:w-auto flex flex-col md:flex-row gap-4">
-                <>
-                  <SummaryBox
-                    label="Vehículos No Desinfectados"
-                    value={countVehicleNoDesinfection}
-                    bgColor="bg-red-100"
-                    textColor="text-red-700"
-                  />
-                  <SummaryBox
-                    label="Vehículos Desinfectados"
-                    value={countVehicleDesinfection}
-                    bgColor="bg-green-100"
-                    textColor="text-green-700"
-                  />
-                </>
-              </div>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4">
+            <div className="flex gap-6">
+              <button
+                onClick={() => handleExport(false)}
+                className="h-[42px] px-4 text-sm bg-green-600 hover:bg-green-700 text-white rounded-md transition-colors"
+              >
+                Exportar Filtrados
+              </button>
+              <button
+                onClick={() => handleExport(true)}
+                className="h-[42px] px-4 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors"
+              >
+                Exportar Todos
+              </button>
             </div>
 
-            <div className="flex flex-col w-full mx-auto bg-white shadow-md rounded-lg overflow-hidden">
-              <div className="w-full flex flex-col sm:flex-row justify-between items-center mb-3 mt-1 pl-3">
-                <div className="flex flex-col sm:flex-row sm:space-x-4">
-                  <div className="flex flex-col mb-3 sm:mb-0">
-                    <label
-                      htmlFor="project"
-                      className="text-sm font-medium text-slate-800 text-center"
-                    >
-                      Tipo de Vehiculo
-                    </label>
-                    <select
-                      value={typeVehicleinput}
-                      onChange={handleProjectChange}
-                      id="project"
-                      className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                    >
-                      <option>---Todos---</option>
-                      {typeVehicle?.data?.map((item, i) => (
-                        <option value={item._id} key={i}>
-                          {item.description}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="flex flex-col mb-3 sm:mb-0">
-                    <label
-                      htmlFor="company"
-                      className="text-sm font-medium text-slate-800 text-center"
-                    >
-                      Compañia
-                    </label>
-                    <select
-                      value={companyinput}
-                      onChange={handleCompanyChange}
-                      id="company"
-                      className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                    >
-                      <option>---Todos---</option>
-                      {company?.data?.map((item) => (
-                        <option value={item._id} key={item._id}>
-                          {item.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="flex flex-col mb-3 sm:mb-0">
-                    <label className="text-sm font-medium text-slate-800 text-center">
-                      Estado de Desinfeccion
-                    </label>
-                    <select
-                      value={statusDesinfectioninput}
-                      onChange={handleStatusDesinfectionChange}
-                      className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                    >
-                      <option>---Todos---</option>
-                      {statusDesinfection?.data?.map((item) => (
-                        <option value={item._id} key={item._id}>
-                          {item.description}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="flex flex-col mb-3 sm:mb-0">
-                    <label
-                      htmlFor="project"
-                      className="text-sm font-medium text-slate-800 text-center"
-                    >
-                      Tipo de Carga
-                    </label>
-                    <select
-                      value={typeBurdeninput}
-                      onChange={handleTypeBurdenChange}
-                      className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                    >
-                      <option>---Todos---</option>
-                      {typeBurden?.data?.map((item) => (
-                        <option value={item._id} key={item._id}>
-                          {item.description}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="flex flex-col mb-3 sm:mb-0">
-                    <label
-                      htmlFor="status"
-                      className="text-sm font-medium text-slate-800 text-center"
-                    >
-                      Tipo de Comunal
-                    </label>
-                    <select
-                      value={typeCommunalinput}
-                      onChange={handleTypeCommunalChange}
-                      className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                    >
-                      <option>---Todos---</option>
-                      {typeCommunal?.data?.map((item) => (
-                        <option value={item._id} key={item._id}>
-                          {item.description}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="flex flex-col mb-3 sm:mb-0">
-                    <label
-                      htmlFor="status"
-                      className="text-sm font-medium text-slate-800 text-center"
-                    >
-                      Tipo de insumo
-                    </label>
-                    <select
-                      value={typeInputinput}
-                      onChange={handleTypeInputChange}
-                      className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                    >
-                      <option>---Todos---</option>
-                      {typeInput?.data?.map((item) => (
-                        <option value={item._id} key={item._id}>
-                          {item.description}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                <div className="w-full max-w-sm min-w-[200px] relative mt-3 sm:mt-0 sm:ml-auto">
-                  <div className="relative">
-                    <input
-                      value={search}
-                      onChange={(e) => setSearch(e.target.value)}
-                      className=" w-full pr-11 h-10 pl-3 py-2 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded transition duration-200 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md"
-                      placeholder="Search for..."
-                    />
-                    <button
-                      className="absolute h-8 w-8 right-1 top-1 my-auto px-2 flex items-center bg-white rounded"
-                      type="button"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="3"
-                        stroke="currentColor"
-                        className="w-8 h-8 text-slate-600"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
+            <div className="w-full md:w-auto flex flex-col md:flex-row gap-4">
+              <>
+                <SummaryBox
+                  label="Vehículos No Desinfectados"
+                  value={countVehicleNoDesinfection}
+                  bgColor="bg-red-100"
+                  textColor="text-red-700"
+                />
+                <SummaryBox
+                  label="Vehículos Desinfectados"
+                  value={countVehicleDesinfection}
+                  bgColor="bg-green-100"
+                  textColor="text-green-700"
+                />
+              </>
             </div>
-
-            <TableComponent
-              setView={setView}
-              dataList={filteredData}
-              {...tableProps}
-            />
           </div>
-        </>
-      ) : view.create === true ? (
-        <Create setView={setView} />
-      ) : view.detail === true ? (
-        <DetailDesinfection detailVehicle={detailVehicle} setView={setView} />
-      ) : (
-        <></>
-      )}
+
+          <div className="flex flex-col w-full mx-auto bg-white shadow-md rounded-lg overflow-hidden">
+            <div className="w-full flex flex-col sm:flex-row justify-between items-center mb-3 mt-1 pl-3">
+              <div className="flex flex-col sm:flex-row sm:space-x-4">
+                <div className="flex flex-col mb-3 sm:mb-0">
+                  <label
+                    htmlFor="project"
+                    className="text-sm font-medium text-slate-800 text-center"
+                  >
+                    Tipo de Vehiculo
+                  </label>
+                  <select
+                    value={typeVehicleinput}
+                    onChange={handleProjectChange}
+                    id="project"
+                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                  >
+                    <option>---Todos---</option>
+                    {typeVehicle?.data?.map((item, i) => (
+                      <option value={item._id} key={i}>
+                        {item.description}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex flex-col mb-3 sm:mb-0">
+                  <label
+                    htmlFor="company"
+                    className="text-sm font-medium text-slate-800 text-center"
+                  >
+                    Compañia
+                  </label>
+                  <select
+                    value={companyinput}
+                    onChange={handleCompanyChange}
+                    id="company"
+                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                  >
+                    <option>---Todos---</option>
+                    {company?.data?.map((item) => (
+                      <option value={item._id} key={item._id}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex flex-col mb-3 sm:mb-0">
+                  <label className="text-sm font-medium text-slate-800 text-center">
+                    Estado de Desinfeccion
+                  </label>
+                  <select
+                    value={statusDesinfectioninput}
+                    onChange={handleStatusDesinfectionChange}
+                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                  >
+                    <option>---Todos---</option>
+                    {statusDesinfection?.data?.map((item) => (
+                      <option value={item._id} key={item._id}>
+                        {item.description}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex flex-col mb-3 sm:mb-0">
+                  <label
+                    htmlFor="project"
+                    className="text-sm font-medium text-slate-800 text-center"
+                  >
+                    Tipo de Carga
+                  </label>
+                  <select
+                    value={typeBurdeninput}
+                    onChange={handleTypeBurdenChange}
+                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                  >
+                    <option>---Todos---</option>
+                    {typeBurden?.data?.map((item) => (
+                      <option value={item._id} key={item._id}>
+                        {item.description}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex flex-col mb-3 sm:mb-0">
+                  <label
+                    htmlFor="status"
+                    className="text-sm font-medium text-slate-800 text-center"
+                  >
+                    Tipo de Comunal
+                  </label>
+                  <select
+                    value={typeCommunalinput}
+                    onChange={handleTypeCommunalChange}
+                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                  >
+                    <option>---Todos---</option>
+                    {typeCommunal?.data?.map((item) => (
+                      <option value={item._id} key={item._id}>
+                        {item.description}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex flex-col mb-3 sm:mb-0">
+                  <label
+                    htmlFor="status"
+                    className="text-sm font-medium text-slate-800 text-center"
+                  >
+                    Tipo de insumo
+                  </label>
+                  <select
+                    value={typeInputinput}
+                    onChange={handleTypeInputChange}
+                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                  >
+                    <option>---Todos---</option>
+                    {typeInput?.data?.map((item) => (
+                      <option value={item._id} key={item._id}>
+                        {item.description}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="w-full max-w-sm min-w-[200px] relative mt-3 sm:mt-0 sm:ml-auto">
+                <div className="relative">
+                  <input
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className=" w-full pr-11 h-10 pl-3 py-2 bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded transition duration-200 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md"
+                    placeholder="Search for..."
+                  />
+                  <button
+                    className="absolute h-8 w-8 right-1 top-1 my-auto px-2 flex items-center bg-white rounded"
+                    type="button"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="3"
+                      stroke="currentColor"
+                      className="w-8 h-8 text-slate-600"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <TableComponent dataList={filteredData} {...tableProps} />
+        </div>
+      }
+
+      { view.detail && <DetailDesinfection detailVehicle={detailVehicle} setView={setView} /> }
+      
     </>
   );
 }

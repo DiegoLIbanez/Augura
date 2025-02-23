@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 
 //Slices
 import companySlice from "./slice/companySlice";
+import viewSlice from "./slice/viewSlice";
 import vehicleSlice from "./slice/vehicleSlice";
 import registeVehicleSlice from "./slice/registeVehicleSlice";
 import typeVehicleSlice from "./slice/typeVehicleSlice";
@@ -17,6 +18,7 @@ import userSlice from "./slice/userSlice";
 
 export default configureStore({
   reducer: {
+    views: viewSlice,
     auth: authSlice,
     vehicle: vehicleSlice,
     user: userSlice,

@@ -1,11 +1,7 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchregisterVehicleByIdSlice } from "../../../store/slice/registeVehicleSlice";
-import { useParams } from "react-router-dom";
+import React from "react";
 import { fecha } from "../../../services/formatDate";
 
-const DetailDesinfection = ({ setView, detailVehicle }) => {
-
+const DetailDesinfection = ({ detailVehicle }) => {
   const vehicle = detailVehicle.vehicle[0] || {};
   const driver = detailVehicle.driver[0] || {};
   const statusDesinfection = detailVehicle.statusDesinfection[0] || {};
@@ -13,20 +9,21 @@ const DetailDesinfection = ({ setView, detailVehicle }) => {
   const typeCommunal = detailVehicle.typeCommunal[0] || {};
   const typeInput = detailVehicle.typeInput[0] || {};
 
-  const handleReturn = () => {
-    setView({ list: true });
-  };
+  // const handleReturn = () => {
+  //   setView({})
+  // };
 
   return (
     <>
-      <div className="container mx-auto p-4">
+      {/* <div className="container mx-auto p-4">
         <button
-          class=" cursor-pointer transition-all bg-blue-500 text-white px-6 py-2 rounded-lg border-blue-600 border-b-[4px] hover:brightness-110 hover:-translate-y-[1px]"
+          className=" cursor-pointer transition-all bg-blue-500 text-white px-6 py-2 rounded-lg border-blue-600 border-b-[4px] hover:brightness-110 hover:-translate-y-[1px]"
           onClick={handleReturn}
         >
           Volver
         </button>
-      </div>
+      </div> */}
+
       <div className="flex flex-col md:flex-row min-h-screen bg-gray-50 p-4 md:p-14 gap-4">
         {/* Sección Derecha - Información */}
 

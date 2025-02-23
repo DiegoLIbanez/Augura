@@ -17,7 +17,6 @@ function AppRouter() {
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/index" element={<Index />} />
-
         <Route
           path="/home"
           element={
@@ -26,7 +25,6 @@ function AppRouter() {
             </PrivateRoute>
           }
         />
-
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

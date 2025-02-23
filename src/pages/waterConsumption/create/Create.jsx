@@ -77,7 +77,7 @@ const ConsumptionForm = ({ setView }) => {
   return (
     <>
 
-      {
+      {/* {
         infoRole === 'Administrador' ? 
           <>
             <div className="container mx-auto p-4">
@@ -87,7 +87,7 @@ const ConsumptionForm = ({ setView }) => {
             </div>
           </> : 
         <></>
-      }
+      } */}
 
       <div className="min-h-screen bg-gray-100 py-8 px-4">
         <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">

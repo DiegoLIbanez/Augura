@@ -15,7 +15,7 @@ export const processDataForChart = (
 
     if (registerVehicle && Array.isArray(registerVehicle)) {
       registerVehicle?.forEach((item) => {
-        console.log(item);
+        // console.log(item);
         const itemDate = new Date(item.createdAt);
         const date = itemDate.toLocaleDateString();
 

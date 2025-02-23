@@ -19,7 +19,7 @@ const List = () => {
     list: true,
     create: false,
     update: false,
-    detail: false,
+    detail: false
   });
 
   const header = [
