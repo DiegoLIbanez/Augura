@@ -48,7 +48,7 @@ const List = () => {
       header: "Acciones",
       render: (item) => (
         <div className="flex gap-2">
-          <button className="px-2 py-1 bg-yellow-500 text-white rounded">
+          <button class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400">
             Editar
           </button>
           <button className="px-2 py-1 bg-red-500 text-white rounded">

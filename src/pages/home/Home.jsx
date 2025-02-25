@@ -27,7 +27,7 @@ function Home() {
     <>
       <div className="flex flex-col min-h-screen">
         <Navbar />
-        <div key={count} className="mt-20 sm:px-6 lg:px-8 py-3">
+        <div key={count} className="mt-20 sm:px-6 lg:px-8 my-3">
           {views.listDisinfect && <ListDisinfect />}
           {views.registerDisinfect && <RegisterDisinfect />}
           {views.waterConsumption && <ListWaterConsumption />}
