@@ -3,9 +3,13 @@ import React, { useState, useRef, useEffect } from "react";
 import Sidebar from "../Sidebar/Sidebar";
 
 //Redux
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
+
+//Slice
+import { logout } from '../../store/slice/authSlice'
 
 function Navbar() {
+  const disptach = useDispatch();
   const infoAuth = useSelector((store) => store.auth.data);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
@@ -27,6 +31,10 @@ function Navbar() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const handleLogout = () => {    
+    disptach(logout());    
+  }
 
   return (
     <>
@@ -55,7 +63,7 @@ function Navbar() {
 
               <div className="flex ms-2 md:me-24">
                 <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
-                  {infoAuth.user}
+                  {/* {infoAuth.user} */}
                 </span>
               </div>
             </div>
@@ -132,8 +140,7 @@ function Navbar() {
                       </a>
                     </li> */}
                     <li>
-                      <a
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">
+                      <a onClick={handleLogout} className="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">
                         Cerrar sesión
                       </a>
                     </li>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Router, Routes } from "react-router-dom";
 
 //Vistas
 import Index from "../pages/index/Index";
@@ -10,23 +10,27 @@ import NotFound from "../pages/notFound/NotFound";
 //Components
 import PrivateRoute from "../components/PrivateRoute/PrivateRoute";
 
+//Auth
+import AuthProvider from "../components/AuthProvider/AuthProvider";
+
 function AppRouter() {
   return (
     <>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/index" element={<Index />} />
-        <Route
-          path="/home"
-          element={
-            <PrivateRoute>
-              <Home />
-            </PrivateRoute>
-          }
-        />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<Index />} />
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="/home"
+              element={
+                <PrivateRoute>
+                  <Home />
+                </PrivateRoute>
+              }
+            />
+            <Route path="*" element={<NotFound />} />
+        </Routes>
+      </AuthProvider>
     </>
   );
 }

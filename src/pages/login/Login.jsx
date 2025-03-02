@@ -1,4 +1,4 @@
-import React,{ useState } from 'react';
+import React,{ useState,useEffect } from 'react';
 
 //Redux
 import { useDispatch } from "react-redux";
@@ -10,12 +10,16 @@ import { login } from "../../store/slice/authSlice";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
-
-  // let token = sessionStorage.getItem('token');
+  
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // useEffect(() => {
+    // console.log("alguien ingreso al login");
+  // }, [])
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,7 +28,7 @@ function Login() {
       password:password
     };
     let response = await dispatch(login(body));  
-    //console.log(response);   
+    // console.log(response);   
     switch (response.payload.statusCode) {
       case 200:
         navigate("/home");
@@ -34,12 +38,6 @@ function Login() {
         break;
     }
   };
-
-  // useEffect(() => {
-  //   if(token){
-  //     console.log('token:',token);
-  //   }
-  // }, [token]);
 
   return (
     <>

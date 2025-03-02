@@ -13,7 +13,7 @@ import { PiListChecksFill } from "react-icons/pi";
 
 function Sidebar({ isOpen }) {
   const dispatch = useDispatch();
-  const infoRole = useSelector((store) => store.auth.data.role);
+  const infoRole = useSelector((store) => store.auth.role);
   const [menu, setMenu] = useState([]);
 
   const handleViewChange = (viewName) => {
@@ -21,6 +21,10 @@ function Sidebar({ isOpen }) {
   };
 
   useEffect(() => {
+
+    // console.log(infoRole);
+    
+
     if (infoRole === "Administrador") {
       setMenu([
         { name: "Lista desinfección", icon: <PiListChecksFill />, function: () => handleViewChange("listDisinfect") },
