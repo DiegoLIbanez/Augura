@@ -51,18 +51,12 @@ function Create({ setView }) {
     dispatch(fetchtypeInput());
   }, [])
 
-  // useEffect(() => {
-    // console.log(userDriver.data);
-    // console.log(vehicle.data);
-    // console.log(statusDesinfection);
-    // console.log(typeCommunal);
-    // console.log(typeBurden);
-    // console.log(typeInput);    
-  // }, [userDriver,vehicle,statusDesinfection,typeCommunal,typeBurden,typeInput])
   
   const filteredVehicles = vehicle?.data?.filter((item) =>
     item.plate.toLowerCase().includes(vehicleInput.toLowerCase())
   );
+
+  console.log(filteredVehicles);
   
   const filteredUserVehicle = userDriver?.data?.filter((item) =>
     item.dni.toLowerCase().includes(userDriverInput.toLowerCase())
@@ -159,7 +153,7 @@ function Create({ setView }) {
           <option value="">--Seleccionar--</option>
           {filteredVehicles?.map((item) => (
             <option value={item._id} key={item._id}>
-              {item.plate}
+              {item.plate} - {item.company[0].name}
             </option>
           ))}
         </select>
