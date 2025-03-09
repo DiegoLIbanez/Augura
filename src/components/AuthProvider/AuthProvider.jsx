@@ -15,7 +15,6 @@ const AuthProvider =  ({ children }) => {
 
         try {
           const responseProfile = await getProfileService(token, user);
-
           dispatch(restoreSession({
             token:token,
             statusCode:responseProfile.data.statusCode,
