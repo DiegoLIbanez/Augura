@@ -158,7 +158,7 @@ function List() {
       header: "Acciones",
       render: (item) => (
         <div className="flex gap-2">
-          <button class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400">
+          <button className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400">
             Editar
           </button>
           <button

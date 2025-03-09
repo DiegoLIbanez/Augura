@@ -21,10 +21,7 @@ function Sidebar({ isOpen }) {
   };
 
   useEffect(() => {
-
     // console.log(infoRole);
-    
-
     if (infoRole === "Administrador") {
       setMenu([
         { name: "Lista desinfección", icon: <PiListChecksFill />, function: () => handleViewChange("listDisinfect") },
@@ -37,7 +34,7 @@ function Sidebar({ isOpen }) {
         { name: "Consumo de agua", function: () => handleViewChange("createwaterConsumption") },
       ]);
     }
-  }, []);
+  }, [infoRole]);
 
   return (
     <>

@@ -15,13 +15,14 @@ const AuthProvider =  ({ children }) => {
 
         try {
           const responseProfile = await getProfileService(token, user);
+          
           dispatch(restoreSession({
             token:token,
+            user:user,
             statusCode:responseProfile.data.statusCode,
-            user:responseProfile.data.data[0].user,
             email:responseProfile.data.data[0].email,
             role:responseProfile.data.data[0].role.description,
-            status:responseProfile.data.data[0].status.description,
+            status:responseProfile.data.data[0].status.description
           }));
         } catch (error) {
           console.error("Error al restaurar la sesión:", error);
