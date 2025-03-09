@@ -41,35 +41,70 @@ function Login() {
 
   return (
     <>
-      <div className='mt-20'>
-        <form>
-          <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
-            <div className="w-full bg-white rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0">
-              <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                <p className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-                  Iniciar sesión
-                </p>
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Usuario
-                  </label>
-                  <input value={user} onChange={(e) => setUser(e.target.value)} placeholder="Nombre de usuario" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5" id="username" type="text" />
-                </div>
-                <div>
-                  <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Contraseña
-                  </label>
-                  <input value={password} onChange={(e) => setPassword(e.target.value)} className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg block w-full p-2.5" placeholder="••••••••" id="password" type="password" />
-                </div>
+      <div className="min-h-screen bg-gray-200 flex items-center justify-center py-8 px-4">
+  <div className="w-full max-w-md bg-white rounded-xl shadow-md overflow-hidden">
+    <div className="p-6 space-y-6">
+      <h2 className="text-2xl font-bold text-gray-800 text-center">
+        Iniciar sesión
+      </h2>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Campo de Usuario */}
+        <div>
+          <label
+            htmlFor="username"
+            className="block text-sm font-medium text-gray-700 mb-2"
+          >
+            Usuario
+          </label>
+          <input
+            type="text"
+            id="username"
+            value={user}
+            onChange={(e) => setUser(e.target.value)}
+            placeholder="Nombre de usuario"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+          />
+        </div>
 
-                <button onClick={handleSubmit} className="w-full bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center  focus:ring-blue-800 text-white" type="submit">
-                  Iniciar sesión
-                </button>            
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
+        {/* Campo de Contraseña */}
+        <div>
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-gray-700 mb-2"
+          >
+            Contraseña
+          </label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••••"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+          />
+        </div>
+
+        {/* Enlace de Recuperar Contraseña */}
+        <div className="text-right">
+          <a
+            href="/recuperar-contrasena" // Cambia esta ruta por la correcta
+            className="text-sm text-blue-600 hover:text-blue-800 hover:underline"
+          >
+            ¿Olvidaste tu contraseña?
+          </a>
+        </div>
+
+        {/* Botón de Iniciar Sesión */}
+        <button
+          type="submit"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        >
+          Iniciar sesión
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
     </>
   );
 }
