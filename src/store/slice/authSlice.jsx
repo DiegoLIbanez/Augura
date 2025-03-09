@@ -26,6 +26,7 @@ export const login = createAsyncThunk("auth/profile", async (body) => {
     let response = {
       token:responseToken.data.token,
       statusCode:responseProfile.data.statusCode,
+      idUser:responseProfile.data.data[0]._id,
       user:responseProfile.data.data[0].user,
       email:responseProfile.data.data[0].email,
       role:responseProfile.data.data[0].role.description,
@@ -57,6 +58,7 @@ const authSlice = createSlice({
     restoreSession: (state, action) => {
       state.isAuthenticated = true;
       state.token = action.payload.token;
+      state._id = action.payload._id;
       state.user = action.payload.user;
       state.email = action.payload.email;
       state.role = action.payload.role;
@@ -65,6 +67,7 @@ const authSlice = createSlice({
     logout: (state) => {
       state.isAuthenticated = false;
       state.token = null;
+      state._id = null;
       state.user = null;
       state.email = null;
       state.role = null;
@@ -82,6 +85,7 @@ const authSlice = createSlice({
         state.status = "succeeded";
         state.isAuthenticated = true;
         state.token = action.payload.token;
+        state._id = action.payload._id;
         state.user = action.payload.user;
         state.role = action.payload.role;
         localStorage.setItem("user", action.payload.user);

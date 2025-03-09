@@ -28,7 +28,7 @@ function Sidebar({ isOpen }) {
         { name: "Consumo de Agua", icon: <HiOutlineDocumentReport />, function: () => handleViewChange("waterConsumption") },
         { name: "Reportes", icon: <HiDocumentReport />, function: () => handleViewChange("graph") }
       ]);
-    } else if (infoRole === "Usuario") {
+    } else if (infoRole === "Operador de Desinfección") {
       setMenu([
         { name: "Registrar desinfección", function: () => handleViewChange("registerDisinfect") },
         { name: "Consumo de agua", function: () => handleViewChange("createwaterConsumption") },

@@ -33,6 +33,7 @@ function Home() {
           {views.waterConsumption && <ListWaterConsumption />}
           {views.createwaterConsumption && <RegisterWaterConsumption />}
           {views.graph && <GraphList />}
+          {views.home && <></>}
         </div>
       </div>
     </>

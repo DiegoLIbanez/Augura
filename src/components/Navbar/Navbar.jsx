@@ -7,9 +7,10 @@ import { useSelector,useDispatch } from "react-redux";
 
 //Slice
 import { logout } from '../../store/slice/authSlice'
+import { setView } from "../../store/slice/viewSlice";
 
 function Navbar() {
-  const disptach = useDispatch();
+  const dispatch = useDispatch();
   const infoAuth = useSelector((store) => store.auth);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
@@ -33,7 +34,8 @@ function Navbar() {
   }, []);
 
   const handleLogout = () => {    
-    disptach(logout());    
+    dispatch(setView("home")); 
+    dispatch(logout());    
   }
 
   return (

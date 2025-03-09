@@ -86,19 +86,19 @@ function List() {
   ];
 
   const columns = [
-    { header: "Dni", render: (item) => item?.person?.[0]?.dni || "N/A" },
-    { header: "Nombre", render: (item) => item?.person?.[0]?.name || "N/A" },
+    { header: "Dni", render: (item) => item?.user?.[0]?.dni || "N/A" },
+    { header: "Nombre", render: (item) => item?.user?.[0]?.name || "N/A" },
     {
       header: "Teléfono",
-      render: (item) => item?.person?.[0]?.phoneNumber || "N/A",
+      render: (item) => item?.user?.[0]?.phoneNumber || "N/A",
     },
     {
       header: "Rol",
-      render: (item) => item?.person?.[0]?.role?.description || "N/A",
+      render: (item) => item?.user?.[0]?.role?.description || "N/A",
     },
     {
       header: "Status",
-      render: (item) => item?.person[0].status.description || "N/A",
+      render: (item) => item?.user[0].status.description || "N/A",
     },
     {
       header: "Nombre Completo del Conductor",
@@ -192,6 +192,7 @@ function List() {
     dispatch(fetchtypeInput());
   }, [dispatch]);
 
+  //Filtros
   useEffect(() => {
     const filtered = vehicleFilter(
       dataList,
@@ -261,7 +262,7 @@ function List() {
 
   const handleClickdetail = (item) => {
     setDetailVehicle(item);
-    setView({ detail:true })
+    setView({ detail:true });
   };
 
   return (

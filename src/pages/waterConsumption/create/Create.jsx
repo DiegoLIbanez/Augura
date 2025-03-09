@@ -13,7 +13,7 @@ import { createWaterConsumption } from "../../../store/slice/waterConsumtionSlic
 const ConsumptionForm = ({ setView }) => {
 
   //Get info redux
-  const infoRole = useSelector((store) => store.auth.data.role);
+  // const infoRole = useSelector((store) => store.auth.data.role);
 
   const dispatch = useDispatch();
 
