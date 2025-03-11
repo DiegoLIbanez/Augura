@@ -3,6 +3,7 @@ import {
   getService,
   getServiceById,
   createService,
+  deleteUser,
 } from "../services/registeVehicleService";
 
 // Obtener usuarios (asyncThunk)
@@ -13,7 +14,7 @@ export const fetchregisterVehicleSlice = createAsyncThunk(
   }
 );
 
-// obtener el registerVehicle por id
+// Obtener el registerVehicle por id
 export const fetchregisterVehicleByIdSlice = createAsyncThunk(
   "registerVehicle/fetregisterVehicleById",
   async (id) => {
@@ -21,9 +22,23 @@ export const fetchregisterVehicleByIdSlice = createAsyncThunk(
   }
 );
 
+// Crear registerVehicle
 export const createRegisterVehicleSlice = async (body) => {
   return await createService(body);
 };
+
+// Eliminar registerVehicle
+export const deleteRegisterVehicleSlice = createAsyncThunk(
+  "registerVehicle/deleteRegisterVehicle",
+  async (vehicleId, { rejectWithValue }) => {
+    try {
+      await deleteUser(vehicleId); // Elimina el registro en el backend
+      return vehicleId; // Devuelve el ID eliminado
+    } catch (error) {
+      return rejectWithValue(error.response.data); // Maneja errores
+    }
+  }
+);
 
 const initialState = {
   statusCode: 0,
@@ -37,12 +52,13 @@ export const registerVehicleSlice = createSlice({
   name: "registerVehicle",
   initialState: initialState,
   reducers: {
-    // agregar registro pi id
+    // Agregar registro por id
     addRegisterVehicleId: (state, action) => {
       state.registerVehicleObj = action.payload;
     },
   },
   extraReducers: (builder) => {
+    // Obtener todos los registros
     builder.addCase(fetchregisterVehicleSlice.pending, (state) => {
       state.loading = true;
     });
@@ -56,7 +72,7 @@ export const registerVehicleSlice = createSlice({
       state.error = action.error;
     });
 
-    // obtener por id
+    // Obtener por id
     builder.addCase(fetchregisterVehicleByIdSlice.pending, (state) => {
       state.loading = true;
     });
@@ -68,6 +84,22 @@ export const registerVehicleSlice = createSlice({
       }
     );
     builder.addCase(fetchregisterVehicleByIdSlice.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    });
+
+    // Eliminar registro
+    builder.addCase(deleteRegisterVehicleSlice.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(deleteRegisterVehicleSlice.fulfilled, (state, action) => {
+      state.loading = false;
+      state.data = state.data.filter(
+        (vehicle) => vehicle.id !== action.payload
+      );
+      state.statusCode = 200;
+    });
+    builder.addCase(deleteRegisterVehicleSlice.rejected, (state, action) => {
       state.loading = false;
       state.error = action.error;
     });

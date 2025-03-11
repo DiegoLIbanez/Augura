@@ -24,7 +24,7 @@ export const getServiceById = async (id) => {
 
 // Crear
 export const createService = async (body) => {
-  const response = await api.post(`/`,body);
+  const response = await api.post(`/`, body);
   return response.data;
 };
 
@@ -40,10 +40,10 @@ export const createService = async (body) => {
 //   return response.data;
 // };
 
-// Eliminar
-// export const deleteUser = async (id) => {
-//   await api.delete(`/${id}`);
-// };
+export const deleteUser = async (id) => {
+  await api.delete(`/${id}`);
+  return id;
+};
 
 // export const getAllCompany = createAsyncThunk(GET_COMPANY_ALL, async () => {
 //   const res = await axios.get(API_ROUTES.COMPANY);

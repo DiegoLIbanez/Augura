@@ -22,14 +22,18 @@ import DetailDesinfection from "../detail/DetailDesinfection";
 //Slices
 import { fetchtypeVehicle } from "../../../store/slice/typeVehicleSlice";
 import { fetchCompany } from "../../../store/slice/companySlice";
-import { fetchregisterVehicleSlice} from "../../../store/slice/registeVehicleSlice";
+import {
+  deleteRegisterVehicleSlice,
+  fetchregisterVehicleSlice,
+} from "../../../store/slice/registeVehicleSlice";
 import { fetchstatusDesinfection } from "../../../store/slice/statusDesinfectionSlice";
 import { fetchTypeBurden } from "../../../store/slice/typeBurdenSlice";
-import { fetchtypeCommunal,} from "../../../store/slice/typeCommunalSlice";
+import { fetchtypeCommunal } from "../../../store/slice/typeCommunalSlice";
 import { fetchtypeInput } from "../../../store/slice/typeInputSlice";
 import { vehicleFilter } from "../../../services/vehicleFilter";
 import FilterDate from "../../../components/FilterDate/FilterDate";
 import { SummaryBox } from "../../../components/SummaryBox/SummaryBox";
+import Swal from "sweetalert2";
 
 function List() {
   // Redux setup
@@ -44,7 +48,8 @@ function List() {
   const [search, setSearch] = useState("");
   const [typeVehicleinput, settypeVehicleinput] = useState("---Todos---");
   const [companyinput, setcompanyinput] = useState("---Todos---");
-  const [statusDesinfectioninput, setstatusDesinfectioninput] =useState("---Todos---");
+  const [statusDesinfectioninput, setstatusDesinfectioninput] =
+    useState("---Todos---");
   const [typeBurdeninput, settypeBurdeninput] = useState("---Todos---");
   const [typeCommunalinput, settypeCommunalinput] = useState("---Todos---");
   const [typeInputinput, settypeInputinput] = useState("---Todos---");
@@ -57,7 +62,9 @@ function List() {
   const dataList = useSelector((state) => state.registerVehicle?.data ?? []);
   const typeVehicle = useSelector((state) => state.typeVehicle.data);
   const company = useSelector((state) => state.company.data);
-  const statusDesinfection = useSelector((state) => state.statusDesinfection.data);
+  const statusDesinfection = useSelector(
+    (state) => state.statusDesinfection.data
+  );
   const typeBurden = useSelector((state) => state.typeBurden.data);
   const typeCommunal = useSelector((state) => state.typeCommunal.data);
   const typeInput = useSelector((state) => state.typeInput.data);
@@ -86,8 +93,11 @@ function List() {
   ];
 
   const columns = [
-    { header: "Dni", render: (item) => item?.user?.[0]?.dni || "N/A" },
-    { header: "Nombre", render: (item) => item?.user?.[0]?.name || "N/A" },
+    {
+      header: "Dni",
+      render: (item) => item?.user[0]?.dni || "N/A",
+    },
+    { header: "Nombre", render: (item) => item?.user[0]?.name || "N/A" },
     {
       header: "Teléfono",
       render: (item) => item?.user?.[0]?.phoneNumber || "N/A",
@@ -98,7 +108,7 @@ function List() {
     },
     {
       header: "Status",
-      render: (item) => item?.user[0].status.description || "N/A",
+      render: (item) => item?.user[0]?.status?.description || "N/A",
     },
     {
       header: "Nombre Completo del Conductor",
@@ -158,12 +168,18 @@ function List() {
       header: "Acciones",
       render: (item) => (
         <div className="flex gap-2">
-          <button className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400">
+          <button className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-400 focus:outline-none focus:ring-2 focus:ring-gray-400">
             Editar
           </button>
           <button
+            onClick={() => handlerClickDelete(item)}
+            className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-gray-400"
+          >
+            Eliminar
+          </button>
+          <button
             onClick={() => handleClickdetail(item)}
-            className="px-2 py-1 bg-blue-500 text-white rounded"
+            className="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-gray-400"
           >
             Detalle
           </button>
@@ -173,8 +189,12 @@ function List() {
   ];
 
   //dispatch
-  const countVehicleDesinfection = filteredData.filter((data) => data.statusDesinfection[0].description === "SI").length;
-  const countVehicleNoDesinfection = filteredData.filter((data) => data.statusDesinfection[0].description === "NO").length;
+  const countVehicleDesinfection = filteredData.filter(
+    (data) => data.statusDesinfection[0].description === "SI"
+  ).length;
+  const countVehicleNoDesinfection = filteredData.filter(
+    (data) => data.statusDesinfection[0].description === "NO"
+  ).length;
 
   const tableProps = {
     header,
@@ -218,19 +238,20 @@ function List() {
     search,
     startDate,
     endDate,
+    deleteRegisterVehicleSlice,
   ]);
 
   // Manejo de los cambios en los filtros
   const handleProjectChange = (e) => settypeVehicleinput(e.target.value);
   const handleCompanyChange = (e) => setcompanyinput(e.target.value);
-  const handleStatusDesinfectionChange = (e) => setstatusDesinfectioninput(e.target.value);
+  const handleStatusDesinfectionChange = (e) =>
+    setstatusDesinfectioninput(e.target.value);
   const handleTypeBurdenChange = (e) => settypeBurdeninput(e.target.value);
   const handleTypeCommunalChange = (e) => settypeCommunalinput(e.target.value);
   const handleTypeInputChange = (e) => settypeInputinput(e.target.value);
 
   // // Funcion para exportar
   const handleExport = (exportAll = false) => {
-    console.log(filteredData);
     const sourceData = exportAll ? dataList || [] : filteredData;
     if (!sourceData || sourceData.length === 0) {
       Swal.fire({
@@ -262,13 +283,36 @@ function List() {
 
   const handleClickdetail = (item) => {
     setDetailVehicle(item);
-    setView({ detail:true });
+    setView({ detail: true });
+  };
+
+  const handlerClickDelete = async (item) => {
+    const { value } = await Swal.fire({
+      title: "¿Estás seguro?",
+      text: "No podrás revertir esto",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (value) {
+      dispatch(deleteRegisterVehicleSlice(item._id));
+    }
   };
 
   return (
     <>
-      { view.list && <div className="flex flex-col w-full mx-auto gap-9 bg-white shadow-md rounded-lg overflow-hidden">
-        <FilterDate setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} startDate={startDate} />
+      {view.list && (
+        <div className="flex flex-col w-full mx-auto gap-9 bg-white shadow-md rounded-lg overflow-hidden">
+          <FilterDate
+            setStartDate={setStartDate}
+            endDate={endDate}
+            setEndDate={setEndDate}
+            startDate={startDate}
+          />
 
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4">
             <div className="flex gap-6">
@@ -462,10 +506,11 @@ function List() {
 
           <TableComponent dataList={filteredData} {...tableProps} />
         </div>
-      }
+      )}
 
-      { view.detail && <DetailDesinfection detailVehicle={detailVehicle} setView={setView} /> }
-      
+      {view.detail && (
+        <DetailDesinfection detailVehicle={detailVehicle} setView={setView} />
+      )}
     </>
   );
 }

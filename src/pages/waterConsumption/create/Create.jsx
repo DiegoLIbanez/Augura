@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import { motion } from "framer-motion";
 //swicht alert
 import Swal from "sweetalert2";
 
@@ -11,7 +11,6 @@ import { fetchtypeCommunal } from "../../../store/slice/typeCommunalSlice";
 import { createWaterConsumption } from "../../../store/slice/waterConsumtionSlice";
 
 const ConsumptionForm = ({ setView }) => {
-
   //Get info redux
   // const infoRole = useSelector((store) => store.auth.data.role);
 
@@ -67,7 +66,7 @@ const ConsumptionForm = ({ setView }) => {
 
   // Manejar cambios en los inputs
   const handleChange = (e) => {
-    setFormData({ ...formData,[e.target.id]: e.target.value});
+    setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
   const handleBack = () => {
@@ -76,7 +75,6 @@ const ConsumptionForm = ({ setView }) => {
 
   return (
     <>
-
       {/* {
         infoRole === 'Administrador' ? 
           <>
@@ -89,7 +87,12 @@ const ConsumptionForm = ({ setView }) => {
         <></>
       } */}
 
-      <div className="min-h-screen bg-gray-200 py-8 px-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="min-h-screen bg-gray-200 py-8 px-4"
+      >
         <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
           <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
             Registro de Consumos
@@ -167,7 +170,7 @@ const ConsumptionForm = ({ setView }) => {
             </button>
           </form>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 };

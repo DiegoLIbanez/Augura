@@ -1,10 +1,10 @@
 export const transformDataForExport = (data, fecha) => {
   return data.map((item) => ({
-    Cédula: item.person?.[0]?.dni || "",
-    Nombre: item.person?.[0]?.name || "",
-    Teléfono: item.person?.[0]?.phoneNumber || "",
-    Rol: item.person?.[0]?.role?.description || "",
-    Estado: item.person?.[0]?.status?.description || "",
+    Cédula: item.user?.[0]?.dni || "",
+    Nombre: item.user?.[0]?.name || "",
+    Teléfono: item.user?.[0]?.phoneNumber || "",
+    Rol: item.user?.[0]?.role?.description || "",
+    Estado: item.user?.[0]?.status?.description || "",
     "Nombre Completo del Conducto":
       item.driver[0].name + " " + item.driver[0].lastname || "",
     "Cédula del Conductor": item.driver[0].dni || "",

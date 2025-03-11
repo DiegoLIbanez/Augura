@@ -1,8 +1,8 @@
 //Toolkit
-import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 //Services
-import { loginService,getProfileService } from "../services/authService";
+import { loginService, getProfileService } from "../services/authService";
 
 // Iniciar sesion
 export const getToken = async (body) => {
@@ -14,30 +14,34 @@ export const getToken = async (body) => {
   } catch (error) {
     console.log(error);
     return error;
-  }   
+  }
 };
 
 export const login = createAsyncThunk("auth/profile", async (body) => {
   try {
     let responseToken = await getToken(body);
     // console.log(responseToken);
-    let responseProfile = await getProfileService(responseToken.data.token,body.user);
-    // console.log(responseProfile);
+    let responseProfile = await getProfileService(
+      responseToken.data.token,
+      body.user
+    );
+
+    //console.log(responseProfile.data.data[0]._id);
     let response = {
-      token:responseToken.data.token,
-      statusCode:responseProfile.data.statusCode,
-      idUser:responseProfile.data.data[0]._id,
-      user:responseProfile.data.data[0].user,
-      email:responseProfile.data.data[0].email,
-      role:responseProfile.data.data[0].role.description,
-      status:responseProfile.data.data[0].status.description,
+      token: responseToken.data.token,
+      statusCode: responseProfile.data.statusCode,
+      _id: responseProfile.data.data[0]._id,
+      user: responseProfile.data.data[0].user,
+      email: responseProfile.data.data[0].email,
+      role: responseProfile.data.data[0].role.description,
+      status: responseProfile.data.data[0].status.description,
     };
-    // console.log(response);
+    //console.log(response);
     return response;
   } catch (error) {
     console.log(error);
     return error;
-  }   
+  }
 });
 
 // Leer el token almacenado en localStorage
@@ -47,8 +51,8 @@ const storedUser = localStorage.getItem("user");
 const initialState = {
   user: storedUser !== "undefined" ? storedUser : null,
   token: storedToken !== "undefined" ? storedToken : null,
-  isAuthenticated: storedToken && storedToken !== "undefined", 
-  status:""
+  isAuthenticated: storedToken && storedToken !== "undefined",
+  status: "",
 };
 
 const authSlice = createSlice({
@@ -74,14 +78,14 @@ const authSlice = createSlice({
       state.status = null;
       localStorage.removeItem("user");
       localStorage.removeItem("token");
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(login.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(login.fulfilled, (state, action) => {   
+      .addCase(login.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.isAuthenticated = true;
         state.token = action.payload.token;
@@ -101,5 +105,3 @@ const authSlice = createSlice({
 // Exportar las acciones para usarlas en otros archivos
 export const { restoreSession, logout } = authSlice.actions;
 export default authSlice.reducer;
-
-
