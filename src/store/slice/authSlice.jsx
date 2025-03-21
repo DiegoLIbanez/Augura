@@ -8,11 +8,11 @@ import { loginService, getProfileService } from "../services/authService";
 export const getToken = async (body) => {
   try {
     let response = await loginService(body);
-    // console.log(response);
+    //console.log(response);
     response.data.statusCode = response.status;
     return response.data;
   } catch (error) {
-    console.log(error);
+    //console.log(error);
     return error;
   }
 };
@@ -20,7 +20,7 @@ export const getToken = async (body) => {
 export const login = createAsyncThunk("auth/profile", async (body) => {
   try {
     let responseToken = await getToken(body);
-    // console.log(responseToken);
+    //console.log(response.data.token);
     let responseProfile = await getProfileService(
       responseToken.data.token,
       body.user

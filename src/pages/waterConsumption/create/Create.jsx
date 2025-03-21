@@ -78,8 +78,8 @@ const ConsumptionForm = ({ setView }) => {
       {/* {
         infoRole === 'Administrador' ? 
           <>
-            <div className="container mx-auto p-4">
-              <button className=" cursor-pointer transition-all bg-blue-500 text-white px-6 py-2 rounded-lg border-blue-600 border-b-[4px] hover:brightness-110 hover:-translate-y-[1px]" onClick={handleBack}>
+            <div className="container p-4 mx-auto">
+              <button className="bg-blue-500 border-b-[4px] border-blue-600 rounded-lg text-white cursor-pointer hover:-translate-y-[1px] hover:brightness-110 px-6 py-2 transition-all" onClick={handleBack}>
                 Volver
               </button>
             </div>
@@ -91,10 +91,10 @@ const ConsumptionForm = ({ setView }) => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="min-h-screen bg-gray-200 py-8 px-4"
+        className="bg-gray-300 min-h-screen px-4 py-8"
       >
-        <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+        <div className="bg-white p-6 rounded-xl shadow-md max-w-md mx-auto overflow-hidden">
+          <h2 className="text-2xl text-center text-gray-800 font-bold mb-6">
             Registro de Consumos
           </h2>
 
@@ -103,7 +103,7 @@ const ConsumptionForm = ({ setView }) => {
             <div>
               <label
                 htmlFor="agua"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="text-gray-700 text-sm block font-medium mb-2"
               >
                 Consumo de agua (litros)
               </label>
@@ -113,7 +113,7 @@ const ConsumptionForm = ({ setView }) => {
                 value={formData.waterConsumption}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                className="border border-gray-300 rounded-lg w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none px-4 py-2 transition-all"
                 placeholder="Ingrese el consumo de agua"
               />
             </div>
@@ -122,7 +122,7 @@ const ConsumptionForm = ({ setView }) => {
             <div>
               <label
                 htmlFor="disinfectantConsumption"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="text-gray-700 text-sm block font-medium mb-2"
               >
                 Consumo de desinfectante (litros)
               </label>
@@ -132,7 +132,7 @@ const ConsumptionForm = ({ setView }) => {
                 value={formData.disinfectantConsumption}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                className="border border-gray-300 rounded-lg w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none px-4 py-2 transition-all"
                 placeholder="Ingrese el consumo de desinfectante"
               />
             </div>
@@ -141,7 +141,7 @@ const ConsumptionForm = ({ setView }) => {
             <div>
               <label
                 htmlFor="typeCommunal"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="text-gray-700 text-sm block font-medium mb-2"
               >
                 Tipo de Comunal
               </label>
@@ -150,7 +150,7 @@ const ConsumptionForm = ({ setView }) => {
                 value={formData.typeCommunal}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-white"
+                className="bg-white border border-gray-300 rounded-lg w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none px-4 py-2 transition-all"
               >
                 <option value="">Seleccione una opción</option>
                 {typeCommunal?.data?.map((item) => (
@@ -164,7 +164,7 @@ const ConsumptionForm = ({ setView }) => {
             {/* Botón de enviar */}
             <button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              className="bg-blue-600 rounded-lg text-white w-full duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 font-medium hover:bg-blue-700 hover:scale-105 px-4 py-3 transform transition-all"
             >
               Guardar
             </button>

@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 function Login() {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -32,7 +33,7 @@ function Login() {
         navigate("/home");
         break;
       default:
-        console.log("Usuario o contraseña incorrectos");
+        setError("Usuario o contraseña incorrectos");
         break;
     }
   };
@@ -43,11 +44,11 @@ function Login() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.9 }}
-        className="min-h-screen bg-gray-200 flex items-center justify-center py-8 px-4"
+        className="flex bg-gray-300 justify-center items-center min-h-screen px-4 py-8"
       >
-        <div className="w-full max-w-md bg-white rounded-xl shadow-md overflow-hidden">
+        <div className="bg-white rounded-xl shadow-md w-full max-w-md overflow-hidden">
           <div className="p-6 space-y-6">
-            <h2 className="text-2xl font-bold text-gray-800 text-center">
+            <h2 className="text-2xl text-center text-gray-800 font-bold">
               Iniciar sesión
             </h2>
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -55,7 +56,7 @@ function Login() {
               <div>
                 <label
                   htmlFor="username"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="text-gray-700 text-sm block font-medium mb-2"
                 >
                   Usuario
                 </label>
@@ -65,7 +66,7 @@ function Login() {
                   value={user}
                   onChange={(e) => setUser(e.target.value)}
                   placeholder="Nombre de usuario"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                  className="border border-gray-300 rounded-lg w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none px-4 py-2 transition-all"
                 />
               </div>
 
@@ -73,7 +74,7 @@ function Login() {
               <div>
                 <label
                   htmlFor="password"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  className="text-gray-700 text-sm block font-medium mb-2"
                 >
                   Contraseña
                 </label>
@@ -83,15 +84,19 @@ function Login() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                  className="border border-gray-300 rounded-lg w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none px-4 py-2 transition-all"
                 />
               </div>
-
+              {error && (
+                <div className="text-red-600 text-sm font-semibold">
+                  {error}
+                </div>
+              )}
               {/* Enlace de Recuperar Contraseña */}
               <div className="text-right">
                 <a
                   href="/recuperar-contrasena" // Cambia esta ruta por la correcta
-                  className="text-sm text-blue-600 hover:text-blue-800 hover:underline"
+                  className="text-blue-600 text-sm hover:text-blue-800 hover:underline"
                 >
                   ¿Olvidaste tu contraseña?
                 </a>
@@ -100,7 +105,7 @@ function Login() {
               {/* Botón de Iniciar Sesión */}
               <button
                 type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="bg-blue-600 rounded-lg text-white w-full duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 font-medium hover:bg-blue-700 hover:scale-105 px-4 py-3 transform transition-all"
               >
                 Iniciar sesión
               </button>

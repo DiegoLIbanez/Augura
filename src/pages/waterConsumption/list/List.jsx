@@ -48,10 +48,10 @@ const List = () => {
       header: "Acciones",
       render: (item) => (
         <div className="flex gap-2">
-          <button className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-400 focus:outline-none focus:ring-2 focus:ring-gray-400">
+          <button className="bg-green-500 rounded text-white focus:outline-none focus:ring-2 focus:ring-gray-400 hover:bg-green-400 px-4 py-2">
             Editar
           </button>
-          <button className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-gray-400">
+          <button className="bg-red-500 rounded text-white focus:outline-none focus:ring-2 focus:ring-gray-400 hover:bg-red-400 px-2 py-1">
             Eliminar
           </button>
         </div>
@@ -78,13 +78,13 @@ const List = () => {
         <>
           <div className="mb-8">
             <button
-              className=" cursor-pointer transition-all bg-blue-500 text-white px-6 py-2 rounded-lg border-blue-600 border-b-[4px] hover:brightness-110 hover:-translate-y-[1px]"
+              className="bg-blue-500 border-b-[4px] border-blue-600 rounded-lg text-white cursor-pointer hover:-translate-y-[1px] hover:brightness-110 px-6 py-2 transition-all"
               onClick={handlerCreate}
             >
               Crear Registro
             </button>
           </div>
-          <div className="flex-grow flex justify-center">
+          <div className="flex flex-grow justify-center">
             <TableComponent
               setView={setView}
               dataList={dataList}

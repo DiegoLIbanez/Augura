@@ -1,4 +1,4 @@
-import React,{ useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 
 //Pages
 import ListDisinfect from "../registerDesinfect/list/List";
@@ -14,13 +14,12 @@ import { useSelector } from "react-redux";
 import Navbar from "../../components/Navbar/Navbar";
 
 function Home() {
-
   const views = useSelector((state) => state.views);
   const [count, setCount] = useState(0);
 
   useEffect(() => {
     // console.log("El estado de views cambió:", views);
-    setCount(prev => prev + 1);
+    setCount((prev) => prev + 1);
   }, [views]);
 
   return (

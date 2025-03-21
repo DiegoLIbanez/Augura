@@ -1,12 +1,12 @@
-import React from 'react';
+import React from "react";
 
 //Rutas
-import AppRouter from './routes/AppRouter';
+import AppRouter from "./routes/AppRouter";
 
 function App() {
   return (
     <>
-      <AppRouter /> 
+      <AppRouter />
     </>
   );
 }

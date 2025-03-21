@@ -1,32 +1,35 @@
 import axios from "axios";
 
 //Config routes
-import { API_ROUTES } from '../../api/apiConfig';
+import { API_ROUTES } from "../../api/apiConfig";
 
 export const loginService = async (body) => {
+  try {
+    const api = axios.create({
+      baseURL: API_ROUTES.LOGIN,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-  const api = axios.create({
-    baseURL: API_ROUTES.LOGIN,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  const response = await api.post("/", body);  
-  // console.log(response);  
-  return response;
+    const response = await api.post("/", body);
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-export const getProfileService = async (token,userName) => {
-  // console.log(token);  
+export const getProfileService = async (token, userName) => {
+  // console.log(token);
   const api = axios.create({
     baseURL: API_ROUTES.AUTH,
     headers: {
       "Content-Type": "application/json",
     },
   });
-  
-  const response = await api.get("/" + userName);  
-  // console.log(response);  
+
+  const response = await api.get("/" + userName);
+  // console.log(response);
   return response;
 };
