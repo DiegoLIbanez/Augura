@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getService } from "../services/VehicleService";
+import { getService } from "../services/vehicleService.jsx";
 
 // Obtener usuarios (asyncThunk)
-export const fetchvehicle = createAsyncThunk("vehicle/fetchvehicle",
+export const fetchvehicle = createAsyncThunk(
+  "vehicle/fetchvehicle",
   async () => {
     return await getService();
   }
