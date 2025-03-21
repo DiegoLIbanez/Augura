@@ -113,7 +113,7 @@ function Create({ setView }) {
       {/* {
         infoRole === 'Administrador' ? 
           <>
-            <button onClick={() => setView({ list:true })} className="w-full bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center  focus:ring-blue-800 text-white" type="submit">
+            <button onClick={() => setView({ list:true })} className="bg-blue-500 rounded-lg text-center text-sm text-white w-full focus:outline-none focus:ring-4 focus:ring-blue-800 focus:ring-primary-300 font-medium hover:bg-blue-700 px-5 py-2.5" type="submit">
               Volver
             </button>
           </> : 
@@ -124,10 +124,10 @@ function Create({ setView }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="min-h-screen bg-gray-200 py-8 px-4"
+        className="bg-gray-300 min-h-screen px-4 py-8"
       >
-        <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+        <div className="bg-white p-6 rounded-xl shadow-md max-w-md mx-auto overflow-hidden">
+          <h2 className="text-2xl text-center text-gray-800 font-bold mb-6">
             Registro de Desinfección
           </h2>
 
@@ -136,7 +136,7 @@ function Create({ setView }) {
             <div>
               <label
                 htmlFor="vehicle"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="text-gray-700 text-sm block font-medium mb-2"
               >
                 Vehículo
               </label>
@@ -146,12 +146,12 @@ function Create({ setView }) {
                 value={vehicleInput}
                 onChange={(e) => setVehicleInput(e.target.value)}
                 placeholder="Vehículo"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                className="border border-gray-300 rounded-lg w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none px-4 py-2 transition-all"
               />
               <select
                 value={vehicleSelect}
                 onChange={(e) => setVehicleSelect(e.target.value)}
-                className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-white"
+                className="bg-white border border-gray-300 rounded-lg w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500 mt-2 outline-none px-4 py-2 transition-all"
               >
                 <option value="">--Seleccionar--</option>
                 {filteredVehicles?.map((item) => (
@@ -166,7 +166,7 @@ function Create({ setView }) {
             <div>
               <label
                 htmlFor="driver"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="text-gray-700 text-sm block font-medium mb-2"
               >
                 Conductor
               </label>
@@ -176,12 +176,12 @@ function Create({ setView }) {
                 value={userDriverInput}
                 onChange={(e) => setUserDriverInput(e.target.value)}
                 placeholder="Conductor"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                className="border border-gray-300 rounded-lg w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none px-4 py-2 transition-all"
               />
               <select
                 value={userDriverSelect}
                 onChange={(e) => setUserDriverSelect(e.target.value)}
-                className="mt-2 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-white"
+                className="bg-white border border-gray-300 rounded-lg w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500 mt-2 outline-none px-4 py-2 transition-all"
               >
                 <option value="">--Seleccionar--</option>
                 {filteredUserVehicle?.map((item) => (
@@ -196,14 +196,14 @@ function Create({ setView }) {
             <div>
               <label
                 htmlFor="statusDesinfection"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="text-gray-700 text-sm block font-medium mb-2"
               >
                 Estado de Desinfección
               </label>
               <select
                 value={statusDesinfectionSelect}
                 onChange={(e) => setStatusDesinfectionSelect(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-white"
+                className="bg-white border border-gray-300 rounded-lg w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none px-4 py-2 transition-all"
               >
                 <option value="">--Seleccionar--</option>
                 {statusDesinfection?.data?.map((item) => (
@@ -218,14 +218,14 @@ function Create({ setView }) {
             <div>
               <label
                 htmlFor="typeCommunal"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="text-gray-700 text-sm block font-medium mb-2"
               >
                 Comunal
               </label>
               <select
                 value={typeCommunalSelect}
                 onChange={(e) => setTypeCommunalSelect(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-white"
+                className="bg-white border border-gray-300 rounded-lg w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none px-4 py-2 transition-all"
               >
                 <option value="">--Seleccionar--</option>
                 {typeCommunal?.data?.map((item) => (
@@ -240,14 +240,14 @@ function Create({ setView }) {
             <div>
               <label
                 htmlFor="typeBurden"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="text-gray-700 text-sm block font-medium mb-2"
               >
                 Tipo de Carga
               </label>
               <select
                 value={typeBurdenSelect}
                 onChange={(e) => setTypeBurdenSelect(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-white"
+                className="bg-white border border-gray-300 rounded-lg w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none px-4 py-2 transition-all"
               >
                 <option value="">--Seleccionar--</option>
                 {typeBurden?.data?.map((item) => (
@@ -262,14 +262,14 @@ function Create({ setView }) {
             <div>
               <label
                 htmlFor="typeInput"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="text-gray-700 text-sm block font-medium mb-2"
               >
                 Tipo de Insumo
               </label>
               <select
                 value={typeInputSelect}
                 onChange={(e) => setTypeInputSelect(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-white"
+                className="bg-white border border-gray-300 rounded-lg w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none px-4 py-2 transition-all"
               >
                 <option value="">--Seleccionar--</option>
                 {typeInput?.data?.map((item) => (
@@ -284,7 +284,7 @@ function Create({ setView }) {
             <div>
               <label
                 htmlFor="initialDestination"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="text-gray-700 text-sm block font-medium mb-2"
               >
                 Destino Inicial
               </label>
@@ -294,7 +294,7 @@ function Create({ setView }) {
                 value={initialDestinationInput}
                 onChange={(e) => setInitialDestinationInput(e.target.value)}
                 placeholder="Inicio de recorrido"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                className="border border-gray-300 rounded-lg w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none px-4 py-2 transition-all"
               />
             </div>
 
@@ -302,7 +302,7 @@ function Create({ setView }) {
             <div>
               <label
                 htmlFor="endDestination"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="text-gray-700 text-sm block font-medium mb-2"
               >
                 Destino Final
               </label>
@@ -312,14 +312,14 @@ function Create({ setView }) {
                 value={endDestinationInput}
                 onChange={(e) => setEndDestinationInput(e.target.value)}
                 placeholder="Final del recorrido"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                className="border border-gray-300 rounded-lg w-full focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none px-4 py-2 transition-all"
               />
             </div>
 
             {/* Botón de Guardar */}
             <button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              className="bg-blue-600 rounded-lg text-white w-full duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 font-medium hover:bg-blue-700 hover:scale-105 px-4 py-3 transform transition-all"
             >
               Guardar
             </button>
